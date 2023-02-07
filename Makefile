@@ -1,5 +1,5 @@
 .DELETE_ON_ERROR:
-.PHONY: all build test lint lint-fix
+.PHONY: all build lint lint-fix qa test
 
 default: build
 
@@ -33,12 +33,21 @@ $(VERSIONING_TEST_BUILT_DATA): test-staging/%: $(VERSIONING_SRC)/%
 $(VERSIONING_TEST_BUILT_FILES) &: $(VERSIONING_ALL_FILES)
 	JS_SRC=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) pretest
 
-test: $(VERSIONING_TEST_BUILT_FILES) $(VERSIONING_TEST_BUILT_DATA)
+.test-marker: $(VERSIONING_TEST_BUILT_FILES) $(VERSIONING_TEST_BUILT_DATA)
 	JS_SRC=test-staging $(CATALYST_SCRIPTS) test
+	touch $@
+
+test: .test-marker
 
 # lint rules
-lint:
+.lint-marker: $(VERSIONING_ALL_FILES)
 	JS_LINT_TARGET=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) lint
+	touch $@
+
+lint: .lint-marker
+	
 
 lint-fix:
 	JS_LINT_TARGET=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) lint-fix
+
+qa: test lint
