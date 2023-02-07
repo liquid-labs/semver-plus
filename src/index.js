@@ -1,1 +1,1 @@
-export * from 'next-version'
+export * from './next-version'
