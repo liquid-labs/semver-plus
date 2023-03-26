@@ -26,12 +26,12 @@ const compareHelper = ({ semverTest, style, timeverTest, versions }) => {
   return currLead
 }
 
-const maxVersion = ({ versions, style }) => {
+const maxVersion = ({ ignoreNonVersions, style, versions }) => {
   if (!versions || versions.length === 0) {
     return null
   }
 
-  style = styleValidator({ versions, style })
+  ([ style, versions ] = styleValidator({ ignoreNonVersions, style, versions }))
 
   return compareHelper({ semverTest : semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }
@@ -41,27 +41,34 @@ const minVersion = ({ versions, style }) => {
     return null
   }
 
-  style = styleValidator({ versions, style })
+  ([ style, versions ] = styleValidator({ versions, style }))
 
   return compareHelper({ semverTest : semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
 }
 
-const styleValidator = ({ versions, style }) => {
+const styleValidator = ({ ignoreNonVersions, style, versions }) => {
   if (style === STYLE_AUTO || style === undefined) {
     style = versionStyle(versions[0])
   }
 
-  for (const version of versions) {
+  versions = versions.filter((version) => {
     const valid = style === STYLE_SEMVER
-      ? semver.valid(version)
+      ? semver.valid(version) !== null
       : isTimeVersion(version)
 
     if (valid === false) {
-      throw new Error(`Version style mis-match; initial version of style '${style}', but '${version}' is not valid for that style.`)
+      if (ignoreNonVersions === true) {
+        return false
+      }
+      else {
+        throw new Error(`Version style mis-match; initial version of style '${style}', but '${version}' is not valid for that style.`)
+      }
     }
-  }
 
-  return style
+    return true
+  })
+
+  return [ style, versions ]
 }
 
 export { maxVersion, minVersion }
