@@ -20,8 +20,12 @@ describe('maxVersion', () => {
   test('mixed version types raises exception',
     () => expect(() => maxVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
 
-  test("'ignoreNonVersions' filters non-version strings from the version list",
-    () => expect(maxVersion({ ignoreNonVersions : true, versions : ['1.0.0', '20230501-101010Z', 'abc'] })).toBe('1.0.0'))
+  test.each([
+    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0'],
+    [['abc', '1.0.0', '20230501-101010Z'], '1.0.0'],
+    [['abc', '20230501-101010Z', '1.0.0'], '20230501-101010Z']
+  ])("'ignoreNonVersions' filters non-version strings from the version list",
+    (versions, expected) => expect(maxVersion({ ignoreNonVersions : true, versions })).toBe(expected))
 })
 
 describe('minVersion', () => {
@@ -41,4 +45,11 @@ describe('minVersion', () => {
 
   test('mixed version types raises exception',
     () => expect(() => minVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
+
+  test.each([
+    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0'],
+    [['abc', '1.0.0', '20230501-101010Z'], '1.0.0'],
+    [['abc', '20230501-101010Z', '1.0.0'], '20230501-101010Z']
+  ])("'ignoreNonVersions' filters non-version strings from the version list",
+    (versions, expected) => expect(minVersion({ ignoreNonVersions : true, versions })).toBe(expected))
 })

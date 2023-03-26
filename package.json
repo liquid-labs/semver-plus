@@ -20,7 +20,12 @@
   },
   "homepage": "https://github.com/liquid-labs/versioning#readme",
   "devDependencies": {
-    "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.57",
+    "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.57"
+  },
+  "liq": {
+    "packageType": "node|lib"
+  },
+  "dependencies": {
     "http-errors": "^2.0.0",
     "semver": "^7.3.8"
   }
