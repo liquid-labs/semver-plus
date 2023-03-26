@@ -66,7 +66,6 @@ const styleValidator = ({ ignoreNonVersions, style, versions }) => {
         }
       }
     }, undefined)
-    
   }
 
   versions = versions.filter((version) => {

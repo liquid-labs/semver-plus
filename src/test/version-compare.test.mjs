@@ -21,9 +21,9 @@ describe('maxVersion', () => {
     () => expect(() => maxVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
 
   test.each([
-    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0' ],
-    [['abc', '1.0.0', '20230501-101010Z' ], '1.0.0' ],
-    [['abc', '20230501-101010Z', '1.0.0'  ], '20230501-101010Z' ]
+    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0'],
+    [['abc', '1.0.0', '20230501-101010Z'], '1.0.0'],
+    [['abc', '20230501-101010Z', '1.0.0'], '20230501-101010Z']
   ])("'ignoreNonVersions' filters non-version strings from the version list",
     (versions, expected) => expect(maxVersion({ ignoreNonVersions : true, versions })).toBe(expected))
 })
@@ -47,9 +47,9 @@ describe('minVersion', () => {
     () => expect(() => minVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
 
   test.each([
-    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0' ],
-    [['abc', '1.0.0', '20230501-101010Z' ], '1.0.0' ],
-    [['abc', '20230501-101010Z', '1.0.0'  ], '20230501-101010Z' ]
+    [['1.0.0', '20230501-101010Z', 'abc'], '1.0.0'],
+    [['abc', '1.0.0', '20230501-101010Z'], '1.0.0'],
+    [['abc', '20230501-101010Z', '1.0.0'], '20230501-101010Z']
   ])("'ignoreNonVersions' filters non-version strings from the version list",
     (versions, expected) => expect(minVersion({ ignoreNonVersions : true, versions })).toBe(expected))
 })
