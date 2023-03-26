@@ -1,0 +1,18 @@
+PASS test-staging/test/next-version.test.js
+PASS test-staging/test/version-compare.test.js
+---------------------|---------|----------|---------|---------|-------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------|---------|----------|---------|---------|-------------------
+All files            |    99.3 |    92.94 |     100 |   99.01 |                   
+ constants.mjs       |     100 |      100 |     100 |     100 |                   
+ is-time-version.mjs |     100 |      100 |     100 |     100 |                   
+ next-version.mjs    |     100 |    91.07 |     100 |     100 | 41,44,54,89-95    
+ version-compare.mjs |    98.5 |    95.83 |     100 |   97.77 | 65                
+ version-style.mjs   |     100 |      100 |     100 |     100 |                   
+---------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 2 passed, 2 total
+Tests:       61 passed, 61 total
+Snapshots:   0 total
+Time:        2.379 s, estimated 3 s
+Ran all test suites matching /.\/test-staging/i.
