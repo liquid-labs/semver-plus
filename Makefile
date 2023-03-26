@@ -33,19 +33,19 @@ $(VERSIONING_TEST_BUILT_DATA): test-staging/%: $(VERSIONING_SRC)/%
 $(VERSIONING_TEST_BUILT_FILES) &: $(VERSIONING_ALL_FILES)
 	JS_SRC=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) pretest
 
-.test-marker: $(VERSIONING_TEST_BUILT_FILES) $(VERSIONING_TEST_BUILT_DATA)
-	JS_SRC=test-staging $(CATALYST_SCRIPTS) test
-	touch $@
+last-test.txt: $(VERSIONING_TEST_BUILT_FILES) $(VERSIONING_TEST_BUILT_DATA)
+	# JS_SRC=$(TEST_STAGING) $(CATALYST_SCRIPTS) test | tee last-test.txt
+	( set -e; set -o pipefail; \
+		JS_SRC=$(TEST_STAGING) $(CATALYST_SCRIPTS) test 2>&1 | tee last-test.txt; )
 
-test: .test-marker
+test: last-test.txt
 
 # lint rules
-.lint-marker: $(VERSIONING_ALL_FILES)
-	JS_LINT_TARGET=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) lint
-	touch $@
+last-lint.txt: $(ALL_SRC_FILES)
+	( set -e; set -o pipefail; \
+		JS_LINT_TARGET=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) lint | tee last-lint.txt; )
 
-lint: .lint-marker
-	
+lint: last-lint.txt	
 
 lint-fix:
 	JS_LINT_TARGET=$(VERSIONING_SRC) $(CATALYST_SCRIPTS) lint-fix

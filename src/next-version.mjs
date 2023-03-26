@@ -1,9 +1,8 @@
 import createError from 'http-errors'
 import semver from 'semver'
 
-const STYLE_SEMVER = 'semver'
-const STYLE_TIMEVER = 'timever'
-const STYLE_AUTO = 'auto'
+import { STYLE_AUTO, STYLE_SEMVER, STYLE_TIMEVER } from './constants'
+import { versionStyle } from './version-style'
 
 const validIncrements = ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease', 'pretype']
 
@@ -53,7 +52,7 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
   if (currType !== null && !(increment === 'prerelease' || increment === 'pretype')) { throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`) }
 
   if (style === STYLE_AUTO || style === undefined) {
-    style = currVer.match(/\d{6}Z(?:-(?:alpha|beta|rc)\.\d+)?$/) ? STYLE_TIMEVER : STYLE_SEMVER
+    style = versionStyle(currVer)
   }
 
   // alpha -> beta -> rc
