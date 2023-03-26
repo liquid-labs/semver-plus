@@ -36,19 +36,37 @@ const maxVersion = ({ ignoreNonVersions, style, versions }) => {
   return compareHelper({ semverTest : semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }
 
-const minVersion = ({ versions, style }) => {
+const minVersion = ({ ignoreNonVersions, style, versions }) => {
   if (!versions || versions.length === 0) {
     return null
   }
 
-  ([style, versions] = styleValidator({ versions, style }))
+  ([style, versions] = styleValidator({ ignoreNonVersions, style, versions }))
 
   return compareHelper({ semverTest : semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
 }
 
 const styleValidator = ({ ignoreNonVersions, style, versions }) => {
   if (style === STYLE_AUTO || style === undefined) {
-    style = versionStyle(versions[0])
+    style = versions.reduce((res, v) => {
+      try {
+        if (res !== undefined) {
+          return res
+        }
+        else {
+          return versionStyle(v)
+        }
+      }
+      catch (e) {
+        if (ignoreNonVersions === true) {
+          return undefined
+        }
+        else {
+          throw e
+        }
+      }
+    }, undefined)
+    
   }
 
   versions = versions.filter((version) => {
