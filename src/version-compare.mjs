@@ -31,7 +31,7 @@ const maxVersion = ({ ignoreNonVersions, style, versions }) => {
     return null
   }
 
-  ([ style, versions ] = styleValidator({ ignoreNonVersions, style, versions }))
+  ([style, versions] = styleValidator({ ignoreNonVersions, style, versions }))
 
   return compareHelper({ semverTest : semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }
@@ -41,7 +41,7 @@ const minVersion = ({ versions, style }) => {
     return null
   }
 
-  ([ style, versions ] = styleValidator({ versions, style }))
+  ([style, versions] = styleValidator({ versions, style }))
 
   return compareHelper({ semverTest : semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
 }
@@ -68,7 +68,7 @@ const styleValidator = ({ ignoreNonVersions, style, versions }) => {
     return true
   })
 
-  return [ style, versions ]
+  return [style, versions]
 }
 
 export { maxVersion, minVersion }

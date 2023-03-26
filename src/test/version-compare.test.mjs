@@ -17,11 +17,11 @@ describe('maxVersion', () => {
 
   test('[] => null', () => expect(maxVersion({ versions : [] })).toBe(null))
 
-  test('mixed version types raises exception', 
-    () => expect(() => maxVersion({ versions: [ '1.0.0', '20230501-101010Z' ]})).toThrow())
+  test('mixed version types raises exception',
+    () => expect(() => maxVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
 
-  test("'ignoreNonVersions' filters non-version strings from the version list", 
-    () => expect(maxVersion({ ignoreNonVersions: true, versions: [ '1.0.0', '20230501-101010Z', 'abc' ]})).toBe('1.0.0'))
+  test("'ignoreNonVersions' filters non-version strings from the version list",
+    () => expect(maxVersion({ ignoreNonVersions : true, versions : ['1.0.0', '20230501-101010Z', 'abc'] })).toBe('1.0.0'))
 })
 
 describe('minVersion', () => {
@@ -39,6 +39,6 @@ describe('minVersion', () => {
 
   test('[] => null', () => expect(minVersion({ versions : [] })).toBe(null))
 
-  test('mixed version types raises exception', 
-    () => expect(() => minVersion({ versions: [ '1.0.0', '20230501-101010Z' ]})).toThrow())
+  test('mixed version types raises exception',
+    () => expect(() => minVersion({ versions : ['1.0.0', '20230501-101010Z'] })).toThrow())
 })
