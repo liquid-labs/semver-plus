@@ -1,6 +1,6 @@
 import semver from 'semver'
 
-import { STYLE_AUTO, STYLE_SEMVER, STYLE_TIMEVER } from './constants'
+import { STYLE_AUTO, STYLE_SEMVER } from './constants'
 import { isTimeVersion } from './is-time-version'
 import { versionStyle } from './version-style'
 
@@ -33,7 +33,7 @@ const maxVersion = ({ versions, style }) => {
 
   style = styleValidator({ versions, style })
 
-  return compareHelper({ semverTest: semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
+  return compareHelper({ semverTest : semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }
 
 const minVersion = ({ versions, style }) => {
@@ -43,7 +43,7 @@ const minVersion = ({ versions, style }) => {
 
   style = styleValidator({ versions, style })
 
-  return compareHelper({ semverTest: semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
+  return compareHelper({ semverTest : semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
 }
 
 const styleValidator = ({ versions, style }) => {
