@@ -73,7 +73,8 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
   }
 
   if (style === STYLE_SEMVER) {
-    nextVer = increment.startsWith('pre')
+    // if we're going 'pre', but currVer is a pre-style, then we need to specify the first stage in the pre, aka, alpha
+    nextVer = increment.startsWith('pre') && currVer.match(/^[\d.Z-]+$/)
       ? semver.inc(currVer, increment, 'alpha')
       : semver.inc(currVer, increment)
   }
