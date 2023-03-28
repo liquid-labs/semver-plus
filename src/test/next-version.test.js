@@ -14,6 +14,9 @@ describe('nextVersion', () => {
   describe('handles semver style', () => {
     test.each([
       ['1.0.0', undefined, '1.0.1'],
+      ['1.0.0-alpha.94', undefined, '1.0.0-alpha.95'],
+      ['1.0.0-beta.94', undefined, '1.0.0-beta.95'],
+      ['1.0.0-rc.94', undefined, '1.0.0-rc.95'],
       ['1.0.0', 'patch', '1.0.1'],
       ['1.0.0', 'minor', '1.1.0'],
       ['1.0.0', 'major', '2.0.0'],
