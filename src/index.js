@@ -1,3 +1,4 @@
+export * from './is-prerelease'
 export * from './is-time-version'
 export * from './next-version'
 export * from './version-compare'
