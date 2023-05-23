@@ -1,0 +1,20 @@
+PASS test-staging/test/prerelease.test.js
+PASS test-staging/test/next-version.test.js
+PASS test-staging/test/version-compare.test.js
+---------------------|---------|----------|---------|---------|-------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------|---------|----------|---------|---------|-------------------
+All files            |   99.27 |    95.34 |     100 |   99.16 |                   
+ constants.mjs       |     100 |      100 |     100 |     100 |                   
+ is-time-version.mjs |     100 |      100 |     100 |     100 |                   
+ next-version.mjs    |     100 |    94.33 |     100 |     100 | 54,90-96          
+ prerelease.mjs      |     100 |      100 |     100 |     100 |                   
+ version-compare.mjs |   97.91 |    95.83 |     100 |   97.77 | 65                
+ version-style.mjs   |     100 |      100 |     100 |     100 |                   
+---------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 3 passed, 3 total
+Tests:       70 passed, 70 total
+Snapshots:   0 total
+Time:        2.352 s, estimated 3 s
+Ran all test suites matching /.\/test-staging/i.
