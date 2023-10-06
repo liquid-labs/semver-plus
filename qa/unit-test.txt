@@ -1,0 +1,21 @@
+Test git rev: a2d8d527ab869536af168b662f553c9a19ee74ef
+PASS test/next-version.test.js
+PASS test/version-compare.test.js
+PASS test/prerelease.test.js
+---------------------|---------|----------|---------|---------|-------------------
+File                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------|---------|----------|---------|---------|-------------------
+All files            |   98.03 |    91.83 |     100 |   97.82 |                   
+ constants.mjs       |     100 |      100 |     100 |     100 |                   
+ is-time-version.mjs |     100 |      100 |     100 |     100 |                   
+ next-version.mjs    |   96.87 |    89.23 |     100 |   96.66 | 109,116           
+ prerelease.mjs      |     100 |      100 |     100 |     100 |                   
+ version-compare.mjs |   97.91 |    95.83 |     100 |   97.77 | 65                
+ version-style.mjs   |     100 |      100 |     100 |     100 |                   
+---------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 3 passed, 3 total
+Tests:       90 passed, 90 total
+Snapshots:   0 total
+Time:        2.301 s, estimated 3 s
+Ran all test suites.
