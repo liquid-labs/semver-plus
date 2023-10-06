@@ -1,10 +1,6 @@
-/last-lint.txt
-/last-test.txt
+/qa
 /node_modules
 /yalc.lock
 /.yalc
 /dist
 /test-staging
-/coverage
-/example-implied.md
-/example.md
