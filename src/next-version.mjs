@@ -5,20 +5,20 @@ import { STYLE_AUTO, STYLE_SEMVER, STYLE_TIMEVER } from './constants'
 import { versionStyle } from './version-style'
 
 const validIncrements = [
-  'major', 
-  'minor', 
-  'patch', 
-  'premajor', 
-  'preminor', 
-  'prepatch', 
+  'major',
+  'minor',
+  'patch',
+  'premajor',
+  'preminor',
+  'prepatch',
   'prerelease',
-  'pretype', 
-  'alpha', 
-  'beta', 
+  'pretype',
+  'alpha',
+  'beta',
   'rc',
   'gold'
 ]
-const validPrereleaseIncrements = ['prerelease', 'pretype', 'alpha', 'beta', 'rc','gold']
+const validPrereleaseIncrements = ['prerelease', 'pretype', 'alpha', 'beta', 'rc', 'gold']
 const validReleaseTypes = ['alpha', 'beta', 'rc', 'gold']
 
 const makeTS = ({ date = new Date() } = {}) => {
@@ -70,7 +70,7 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
     throw createError.BadRequest(`Cannot increment ${increment} for non-prerelease versions.`)
   }
   if (currPrerelease !== null && !validPrereleaseIncrements.includes(increment)) {
-    throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`) 
+    throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
   }
 
   if (style === STYLE_AUTO || style === undefined) {
@@ -93,9 +93,9 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
     return nextVer // we're done
   }
   else if (validReleaseTypes.includes(increment)) {
-    const currReleasePosition = currPrerelease === null 
-      ? validReleaseTypes.indexOf('gold') 
-      : validReleaseTypes.indexOf(currPrerelease)    
+    const currReleasePosition = currPrerelease === null
+      ? validReleaseTypes.indexOf('gold')
+      : validReleaseTypes.indexOf(currPrerelease)
     const incrementPosition = validReleaseTypes.indexOf(increment)
     if (incrementPosition <= currReleasePosition) {
       throw createError.BadRequest(`Cannot move release type backwards from ${currPrerelease || 'gold'} to ${increment}.`)
@@ -103,7 +103,7 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
 
     if (increment === 'gold') {
       if (style === STYLE_SEMVER) {
-        nextVer = currVer.replace(/^([\d.Z]+)-(?:alpha|beta|rc)(?:\.\d+)?/, `$1`)
+        nextVer = currVer.replace(/^([\d.Z]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
       }
       else { // style === STYLE_TIMEVER
         nextVer = currVer.replace(/(\d+)\.\d{8}\.\d{6}Z-(?:alpha|beta|rc)\.\d+/, '$1.' + makeTS())

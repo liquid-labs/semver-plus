@@ -52,20 +52,20 @@ describe('nextVersion', () => {
       ['1.0.0-rc.1', 'alpha'],
       ['1.0.0-rc.1', 'beta'],
       ['1.0.0-rc.1', 'rc'],
-      ['1.0.0','alpha'],
-      ['1.0.0','beta'],
-      ['1.0.0','rc']
+      ['1.0.0', 'alpha'],
+      ['1.0.0', 'beta'],
+      ['1.0.0', 'rc']
     ])('%s + %s -> throws an exception', (currVer, increment) =>
       expect(() => ver.nextVersion({ currVer, increment })).toThrow())
   })
 
   test.each([
-    'prototype.1', 
-    '0.738.1', 
+    'prototype.1',
+    '0.738.1',
     'x-y-z--'
   ])("raises an exception on invalid prerelease name '%s'", (currPrerelease) => {
     const currVer = `1.0.0-${currPrerelease}`
-    expect(() => ver.version({ currVer, increment: 'prerelease' }))
+    expect(() => ver.version({ currVer, increment : 'prerelease' }))
   })
 
   describe('handles timever style', () => {
