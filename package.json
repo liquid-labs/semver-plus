@@ -1,8 +1,8 @@
 {
-  "name": "@liquid-labs/versioning",
+  "name": "@liquid-labs/semver-plus",
   "version": "1.0.0-alpha.7",
   "description": "",
-  "main": "dist/versioning.js",
+  "main": "dist/semver-plus.js",
   "scripts": {
     "build": "make",
     "lint": "make lint",
@@ -11,14 +11,20 @@
     "preversion": "npm run qa",
     "qa": "make qa"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": [],
   "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
   "license": "UNLICENSED",
-  "repository": "git+ssh://git@github.com/liquid-labs/versioning.git",
-  "bugs": {
-    "url": "https://github.com/liquid-labs/versioning/issues"
+  "repository": {
+    "url": "git+ssh://git@github.com/liquid-labs/semver-plus.git",
+    "type": "git"
   },
-  "homepage": "https://github.com/liquid-labs/versioning#readme",
+  "bugs": {
+    "url": "https://github.com/liquid-labs/semver-plus/issues"
+  },
+  "homepage": "https://github.com/liquid-labs/semver-plus#readme",
   "devDependencies": {
     "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.57"
   },
