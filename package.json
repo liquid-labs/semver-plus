@@ -4,11 +4,12 @@
   "description": "",
   "main": "dist/semver-plus.js",
   "scripts": {
-    "build": "make",
+    "build": "make build",
     "lint": "make lint",
     "lint:fix": "make lint-fix",
     "test": "make test",
     "preversion": "npm run qa",
+    "prepack": "npm run build",
     "qa": "make qa"
   },
   "engines": {
@@ -26,6 +27,9 @@
   },
   "homepage": "https://github.com/liquid-labs/semver-plus#readme",
   "devDependencies": {
+    "@liquid-labs/catalyst-resource-babel-and-rollup": "^1.0.0-alpha.3",
+    "@liquid-labs/catalyst-resource-eslint": "^1.0.0-alpha.1",
+    "@liquid-labs/catalyst-resource-jest": "^1.0.0-alpha.3",
     "@liquid-labs/catalyst-scripts": "^1.0.0-alpha.57"
   },
   "liq": {
