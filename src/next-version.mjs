@@ -4,7 +4,22 @@ import semver from 'semver'
 import { STYLE_AUTO, STYLE_SEMVER, STYLE_TIMEVER } from './constants'
 import { versionStyle } from './version-style'
 
-const validIncrements = ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease', 'pretype']
+const validIncrements = [
+  'major',
+  'minor',
+  'patch',
+  'premajor',
+  'preminor',
+  'prepatch',
+  'prerelease',
+  'pretype',
+  'alpha',
+  'beta',
+  'rc',
+  'gold'
+]
+const validPrereleaseIncrements = ['prerelease', 'pretype', 'alpha', 'beta', 'rc', 'gold']
+const validReleaseTypes = ['alpha', 'beta', 'rc', 'gold']
 
 const makeTS = ({ date = new Date() } = {}) => {
   const timestamp = date.getUTCFullYear()
@@ -45,11 +60,18 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
 
   let nextVer
   // determine concrete value for increment
-  let currType = currVer.replace(/^[\d.Z-]+(alpha|beta|rc)(?:\.\d+)?/, '$1')
-  if (currType === currVer) currType = null
+  let currPrerelease = currVer.replace(/^[\d.Z]+-([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*?)(?:\.\d+)?/, '$1')
+  if (currPrerelease === currVer) currPrerelease = null
+  else if (!validReleaseTypes.includes(currPrerelease)) {
+    throw createError.BadRequest(`Cannot handle unsupported pre-release '${currPrerelease}'. Prerelease ID must be one of 'alpha', 'beta', or 'rc'.`)
+  }
 
-  if (currType === null && increment === 'prerelease') { throw createError.BadRequest('Cannot increment prerelease for non-prerelease versions.') }
-  if (currType !== null && !(increment === 'prerelease' || increment === 'pretype')) { throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`) }
+  if (currPrerelease === null && validPrereleaseIncrements.includes(increment)) {
+    throw createError.BadRequest(`Cannot increment ${increment} for non-prerelease versions.`)
+  }
+  if (currPrerelease !== null && !validPrereleaseIncrements.includes(increment)) {
+    throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
+  }
 
   if (style === STYLE_AUTO || style === undefined) {
     style = versionStyle(currVer)
@@ -57,9 +79,9 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
 
   // alpha -> beta -> rc
   if (increment === 'pretype') {
-    if (currType === 'alpha') nextVer = currVer.replace(/([0-1.Z-]+)alpha(\.\d+)?/, '$1beta.0')
-    else if (currType === 'beta') nextVer = currVer.replace(/([0-1.Z-]+)beta(\.\d+)?/, '$1rc.0')
-    else if (currType === 'rc') { // is special in the case of timever + pretype
+    if (currPrerelease === 'alpha') nextVer = currVer.replace(/([0-1.Z-]+)alpha(\.\d+)?/, '$1beta.0')
+    else if (currPrerelease === 'beta') nextVer = currVer.replace(/([0-1.Z-]+)beta(\.\d+)?/, '$1rc.0')
+    else if (currPrerelease === 'rc') { // is special in the case of timever + pretype
       if (style === STYLE_SEMVER) {
         nextVer = currVer.replace(/([0-1.Z]+)-rc(?:\.\d+)?/, '$1')
       }
@@ -67,9 +89,34 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
         nextVer = currVer.replace(/(\d+)\.\d{8}\.\d{6}Z-rc\.\d+/, '$1.' + makeTS())
       }
     }
-    else throw createError.InternalServerError(`Failed to increment prerelease type. Prerelease ID must be one of 'alpha', 'beta', or 'rc'. (${currVer}/${currType}/${increment})`)
 
     return nextVer // we're done
+  }
+  else if (validReleaseTypes.includes(increment)) {
+    const currReleasePosition = currPrerelease === null
+      ? validReleaseTypes.indexOf('gold')
+      : validReleaseTypes.indexOf(currPrerelease)
+    const incrementPosition = validReleaseTypes.indexOf(increment)
+    if (incrementPosition <= currReleasePosition) {
+      throw createError.BadRequest(`Cannot move release type backwards from ${currPrerelease || 'gold'} to ${increment}.`)
+    }
+
+    if (increment === 'gold') {
+      if (style === STYLE_SEMVER) {
+        nextVer = currVer.replace(/^([\d.Z]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
+      }
+      else { // style === STYLE_TIMEVER
+        nextVer = currVer.replace(/(\d+)\.\d{8}\.\d{6}Z-(?:alpha|beta|rc)\.\d+/, '$1.' + makeTS())
+      }
+    }
+    else if (style === STYLE_SEMVER) {
+      nextVer = currVer.replace(/^([\d.Z-]+)(?:alpha|beta|rc)(?:\.\d+)?/, `$1${increment}.0`)
+    }
+    else { // style === STYLE_TIMEVER
+      nextVer = currVer.replace(/(\d+)\.\d{8}\.\d{6}Z-(?:alpha|beta|rc)\.\d+/, '$1.' + makeTS() + increment + '.0')
+    }
+
+    return nextVer
   }
 
   if (style === STYLE_SEMVER) {
@@ -83,17 +130,17 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
 
     const [currMajor] = currVer.split('.')
     const nextMajor = increment === 'major' || increment === 'premajor' ? '' + (parseInt(currMajor) + 1) : currMajor
-    if (currType === null && increment.startsWith('pre')) {
+    if (currPrerelease === null && increment.startsWith('pre')) {
       nextVer = nextMajor + '.' + timestamp + '-alpha.0'
     }
-    else if (currType !== null && increment === 'prerelease') {
+    else if (currPrerelease !== null && increment === 'prerelease') {
       const currPreReleaseString = (currVer.match(/(?:alpha|beta|rc)\.(\d+)$/) || [null, null])[1]
       const currPreRelease = parseInt(currPreReleaseString)
       const currBare = currVer.replace(/\d+$/, '')
       nextVer = currBare + (currPreRelease + 1)
     }
     else {
-      nextVer = nextMajor + '.' + timestamp + (currType ? '-' + currType : '')
+      nextVer = nextMajor + '.' + timestamp + (currPrerelease ? '-' + currPrerelease : '')
     }
   }
 
