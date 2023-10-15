@@ -2,24 +2,8 @@ import createError from 'http-errors'
 import semver from 'semver'
 
 import { STYLE_AUTO, STYLE_SEMVER, STYLE_TIMEVER } from './constants'
+import { increments, prereleaseIncrements, releaseTypes } from './ext-constants'
 import { versionStyle } from './version-style'
-
-const validIncrements = [
-  'major',
-  'minor',
-  'patch',
-  'premajor',
-  'preminor',
-  'prepatch',
-  'prerelease',
-  'pretype',
-  'alpha',
-  'beta',
-  'rc',
-  'gold'
-]
-const validPrereleaseIncrements = ['prerelease', 'pretype', 'alpha', 'beta', 'rc', 'gold']
-const validReleaseTypes = ['alpha', 'beta', 'rc', 'gold']
 
 const makeTS = ({ date = new Date() } = {}) => {
   const timestamp = date.getUTCFullYear()
@@ -54,7 +38,7 @@ const makeTS = ({ date = new Date() } = {}) => {
  *    other prerelease ID with a 'pretype' increment will result in undefined results
  */
 const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
-  if (increment !== undefined && !validIncrements.includes(increment)) { throw createError.BadRequest(`Invalid increment '${increment}' specified.`) }
+  if (increment !== undefined && !increments.includes(increment)) { throw createError.BadRequest(`Invalid increment '${increment}' specified.`) }
   // what are we incrementing? default is patch for released and prerelease for pre-release projects
   increment = increment || (currVer.match(/^[\d.Z-]+$/) ? 'patch' : 'prerelease')
 
@@ -62,14 +46,14 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
   // determine concrete value for increment
   let currPrerelease = currVer.replace(/^[\d.Z]+-([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*?)(?:\.\d+)?/, '$1')
   if (currPrerelease === currVer) currPrerelease = null
-  else if (!validReleaseTypes.includes(currPrerelease)) {
+  else if (!releaseTypes.includes(currPrerelease)) {
     throw createError.BadRequest(`Cannot handle unsupported pre-release '${currPrerelease}'. Prerelease ID must be one of 'alpha', 'beta', or 'rc'.`)
   }
 
-  if (currPrerelease === null && validPrereleaseIncrements.includes(increment)) {
+  if (currPrerelease === null && prereleaseIncrements.includes(increment)) {
     throw createError.BadRequest(`Cannot increment ${increment} for non-prerelease versions.`)
   }
-  if (currPrerelease !== null && !validPrereleaseIncrements.includes(increment)) {
+  if (currPrerelease !== null && !prereleaseIncrements.includes(increment)) {
     throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
   }
 
@@ -92,11 +76,11 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
 
     return nextVer // we're done
   }
-  else if (validReleaseTypes.includes(increment)) {
+  else if (releaseTypes.includes(increment)) {
     const currReleasePosition = currPrerelease === null
-      ? validReleaseTypes.indexOf('gold')
-      : validReleaseTypes.indexOf(currPrerelease)
-    const incrementPosition = validReleaseTypes.indexOf(increment)
+      ? releaseTypes.indexOf('gold')
+      : releaseTypes.indexOf(currPrerelease)
+    const incrementPosition = releaseTypes.indexOf(increment)
     if (incrementPosition <= currReleasePosition) {
       throw createError.BadRequest(`Cannot move release type backwards from ${currPrerelease || 'gold'} to ${increment}.`)
     }
