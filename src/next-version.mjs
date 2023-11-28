@@ -37,8 +37,10 @@ const makeTS = ({ date = new Date() } = {}) => {
  *    means to increment the pre-release ID from 'alpha' -> 'beta' -> 'rc' -> none. Passing in a `currVer` with any
  *    other prerelease ID with a 'pretype' increment will result in undefined results
  */
-const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
-  if (increment !== undefined && !increments.includes(increment)) { throw createError.BadRequest(`Invalid increment '${increment}' specified.`) }
+const nextVersion = ({ currVer, date, increment, loose = false, style = STYLE_AUTO }) => {
+  if (increment !== undefined && !increments.includes(increment)) {
+    throw createError.BadRequest(`Invalid increment '${increment}' specified.`)
+  }
   // what are we incrementing? default is patch for released and prerelease for pre-release projects
   increment = increment || (currVer.match(/^[\d.Z-]+$/) ? 'patch' : 'prerelease')
 
@@ -54,7 +56,13 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
     throw createError.BadRequest(`Cannot increment ${increment} for non-prerelease versions.`)
   }
   if (currPrerelease !== null && !prereleaseIncrements.includes(increment)) {
-    throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
+    if (loose === true) {
+      currVer = nextVersion(({ currVer, increment : 'gold' }))
+      currPrerelease = undefined
+    }
+    else {
+      throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
+    }
   }
 
   if (style === STYLE_AUTO || style === undefined) {
@@ -67,7 +75,7 @@ const nextVersion = ({ currVer, date, increment, style = STYLE_AUTO }) => {
     else if (currPrerelease === 'beta') nextVer = currVer.replace(/([0-1.Z-]+)beta(\.\d+)?/, '$1rc.0')
     else if (currPrerelease === 'rc') { // is special in the case of timever + pretype
       if (style === STYLE_SEMVER) {
-        nextVer = currVer.replace(/([0-1.Z]+)-rc(?:\.\d+)?/, '$1')
+        nextVer = currVer.replace(/([0-9.Z]+)-rc(?:\.\d+)?/, '$1')
       }
       else {
         nextVer = currVer.replace(/(\d+)\.\d{8}\.\d{6}Z-rc\.\d+/, '$1.' + makeTS())

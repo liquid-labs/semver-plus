@@ -1,59 +1,59 @@
-workflows:
-  local:
-    node-project:
-      setup-standard:
+projects:
+  workflows:
+    node:
+      build:
         dependencies:
-          - '@liquid-labs/catalyst-resource-babel-and-rollup'
-          - '@liquid-labs/catalyst-resource-eslint'
-          - '@liquid-labs/catalyst-resource-jest'
-        scripts:
-          - builder: '@liquid-labs/catalyst-lib-makefiles'
+          - '@liquid-labs/sdlc-resource-babel-and-rollup'
+          - '@liquid-labs/sdlc-resource-eslint'
+          - '@liquid-labs/sdlc-resource-jest'
+        artifacts:
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
             version: 1.0.0-alpha.3
             priority: 0
             path: Makefile
             purpose: >-
               Sets up standard target vars (like 'BUILD_TARGETS') and runs
               scripts from 'make'.
-          - builder: '@liquid-labs/catalyst-lib-makefiles'
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
             version: 1.0.0-alpha.3
             priority: 10
             path: make/10-locations.mk
             purpose: Defines the most basic locations, like the source directory.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 10
             path: make/10-resources.mk
             purpose: Locates tool executables and configuration files.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 15
             path: make/15-data-finder.mk
             purpose: >-
               Sets up vars listing test data files which will need to be copied
               under the test staging dir.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 20
             path: make/20-js-src-finder.mk
             purpose: >-
               Sets up vars listing JS files which will need to be tested and
               built.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 50
             path: make/50-semver-plus-js.mk
             purpose: Builds the 'dist/semver-plus.js' artifact.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 55
             path: make/55-lint.mk
             purpose: Provides lint functionality with eslint.
-          - builder: '@liquid-labs/catalyst-builder-node'
-            version: 1.0.0-alpha.0
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
+            version: 1.0.0-alpha.3
             priority: 55
             path: make/55-test.mk
             purpose: Provides test functionality with jest.
-          - builder: '@liquid-labs/catalyst-lib-makefiles'
+          - builder: '@liquid-labs/sdlc-projects-workflow-node-build'
             version: 1.0.0-alpha.3
             priority: 95
             path: make/95-final-targets.mk
@@ -63,12 +63,3 @@ workflows:
         config:
           noDevInstall: true
           noDoc: true
-  github:
-    node-unit-test:
-      add:
-        scripts:
-          - builder: '@liquid-labs/catalyst-builder-github-workflows-node-unit-test'
-            version: 1.0.0-alpha.0
-            path: .github/workflows/unit-tests-node.yaml
-            purpose: Runs node unit test CI/CD using a GitHub Workflow.
-            config: {}
