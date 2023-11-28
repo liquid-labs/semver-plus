@@ -38,7 +38,7 @@ const makeTS = ({ date = new Date() } = {}) => {
  *    other prerelease ID with a 'pretype' increment will result in undefined results
  */
 const nextVersion = ({ currVer, date, increment, loose = false, style = STYLE_AUTO }) => {
-  if (increment !== undefined && !increments.includes(increment)) { 
+  if (increment !== undefined && !increments.includes(increment)) {
     throw createError.BadRequest(`Invalid increment '${increment}' specified.`)
   }
   // what are we incrementing? default is patch for released and prerelease for pre-release projects
@@ -64,7 +64,6 @@ const nextVersion = ({ currVer, date, increment, loose = false, style = STYLE_AU
       throw createError.BadRequest(`Prerelease version ${currVer} can only be incremented by 'prerelease' or 'pretype'.`)
     }
   }
-
 
   if (style === STYLE_AUTO || style === undefined) {
     style = versionStyle(currVer)
