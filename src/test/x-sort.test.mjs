@@ -1,4 +1,4 @@
-/* global describ expect test */
+/* global describe expect test */
 import { xSort } from '../x-sort'
 
 describe('xSort', () => {
@@ -13,5 +13,11 @@ describe('xSort', () => {
     [['*', '1.0.0', '1.0.x', '1.x'], ['1.0.0', '1.0.x', '1.x', '*']],
     [['x', '1.0.0', '1.0.x', '1.x'], ['1.0.0', '1.0.x', '1.x', 'x']],
     [['x', '1.0.0', '2.0.x', '1.x'], ['1.0.0', '1.x', '2.0.x', 'x']],
+    [
+      ['1.0.0', '1.0.0-beta.1', '1.0.0-alpha.2', '1.0.0-rc.1'],
+      ['1.0.0-alpha.2', '1.0.0-beta.1', '1.0.0-rc.1', '1.0.0']
+    ],
+    [['1.0.0-alpha.2', '1.0.0-alpha.1'], ['1.0.0-alpha.1', '1.0.0-alpha.2']],
+    [['1.0.0-beta.x', '1.0.0-alpha.x'], ['1.0.0-alpha.x', '1.0.0-beta.x']]
   ])('%p => %p', (input, expected) => expect(xSort(input)).toEqual(expected))
 })

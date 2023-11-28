@@ -27,7 +27,7 @@ const xSort = (versionsAndRanges) => {
 
   const sortedVersions = versions.sort(semver.compare)
 
-  const sortedRanges = ranges.sort((a,b) => {
+  const sortedRanges = ranges.sort((a, b) => {
     // '*' is a special case since it's min is zero and it's max is infinite
     if (semver.validRange(a) === '*') { return 1 } // semver.validRange normalizes '*' equivs to '*'
     else if (semver.validRange(b) === '*') { return -1 }
@@ -40,27 +40,29 @@ const xSort = (versionsAndRanges) => {
       return minCompare
     }
     else {
-      const nextMajorAValid = semver.satisfies(nextVersion({ currVer: aMin, increment: 'major' }), a)
-      const nextMajorBValid = semver.satisfies(nextVersion({ currVer: bMin, increment: 'major' }), b)
+      const nextMajorAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'major' }), a)
+      const nextMajorBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'major' }), b)
       if (nextMajorAValid === true && nextMajorBValid === true) { return 0 }
       else if (nextMajorAValid === true) { return 1 }
       else if (nextMajorBValid === true) { return -1 }
       // else, let's test minor
-      const nextMinorAValid = semver.satisfies(nextVersion({ currVer: aMin, increment: 'minor' }), a)
-      const nextMinorBValid = semver.satisfies(nextVersion({ currVer: bMin, increment: 'minor' }), b)
+      const nextMinorAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'minor' }), a)
+      const nextMinorBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'minor' }), b)
       if (nextMinorAValid === true && nextMinorBValid === true) { return 0 }
       else if (nextMinorAValid === true) { return 1 }
       else if (nextMinorBValid === true) { return -1 }
       // else, let's test patch
-      const nextPatchAValid = semver.satisfies(nextVersion({ currVer: aMin, increment: 'patch' }), a)
-      const nextPatchBValid = semver.satisfies(nextVersion({ currVer: bMin, increment: 'patch' }), b)
+      const nextPatchAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'patch' }), a)
+      const nextPatchBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'patch' }), b)
       if (nextPatchAValid === true && nextPatchBValid === true) { return 0 }
       else if (nextPatchAValid === true) { return 1 }
       else if (nextPatchBValid === true) { return -1 }
       // else, it's a pre-release shoot out
       const prePartA = semver.prerelease(a)[0]
       const prePartB = semver.prerelease(b)[0]
-      return localeCompare(prePartA, prePartB)
+
+      console.log('prePartA:', prePartA) // DEBUG
+      return prePartA.localeCompare(prePartB)
     }
   })
 
@@ -83,10 +85,10 @@ const xSort = (versionsAndRanges) => {
     const lastVersion = semver.maxSatisfying(sortedVersions, range)
     if (lastVersion !== null) {
       const indexOfLastVersion = allSorted.indexOf(lastVersion)
-      // we may have already inserted a range, so we need to find where the possible sequence of ranges ends and the 
-      // next version begins (because ranges are sorted, we want to insert our range at the end of the sequence of 
+      // we may have already inserted a range, so we need to find where the possible sequence of ranges ends and the
+      // next version begins (because ranges are sorted, we want to insert our range at the end of the sequence of
       // ranges, if any).
-      let nextVersionOffset = allSorted.slice(indexOfLastVersion + 1).findIndex((vOrR) => semver.valid(vOrR))
+      const nextVersionOffset = allSorted.slice(indexOfLastVersion + 1).findIndex((vOrR) => semver.valid(vOrR))
       if (nextVersionOffset === -1) {
         allSorted.push(range)
         allRangesGreater = true
