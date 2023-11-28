@@ -1,8 +1,15 @@
 import semver from 'semver'
 
+import { xRangeRE } from './constants'
+import { minVersion } from './min-version'
+import { firstPast } from './first-past'
 import { nextVersion } from './next-version'
 
+/**
+ * Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x). The ranges are sorted according to their highest version; e.g., 1.3.34 < 1.3.*. (I believe it can accept caret ranges too, but I would need to review the spec.)
+ */
 const xSort = (versionsAndRanges) => {
+  // TODO: to sort any range type, develop 'minOutOfRange' and use those to sort ranges
   const versions = []
   const ranges = []
 
@@ -10,17 +17,22 @@ const xSort = (versionsAndRanges) => {
   versionsAndRanges = versionsAndRanges.filter((v, i, a) => i === a.indexOf(v))
 
   for (const versionOrRange of versionsAndRanges) {
-    const version = semver.valid(versionOrRange)
-    if (version !== null) {
-      versions.push(versionOrRange)
+    if (versionOrRange.match(xRangeRE)) {
+      ranges.push(versionOrRange)
     }
     else {
-      const range = semver.validRange(versionOrRange)
-      if (range !== null) {
-        ranges.push(versionOrRange)
+      const version = semver.valid(versionOrRange)
+      if (version !== null) {
+        versions.push(versionOrRange)
       }
       else {
-        throw new Error(`Input '${versionOrRange}' is neither a version nor version range.`)
+        const range = semver.validRange(versionOrRange)
+        if (range !== null) {
+          ranges.push(versionOrRange)
+        }
+        else {
+          throw new Error(`Input '${versionOrRange}' is neither a version nor version range.`)
+        }
       }
     }
   }
@@ -28,41 +40,20 @@ const xSort = (versionsAndRanges) => {
   const sortedVersions = versions.sort(semver.compare)
 
   const sortedRanges = ranges.sort((a, b) => {
-    // '*' is a special case since it's min is zero and it's max is infinite
-    if (semver.validRange(a) === '*') { return 1 } // semver.validRange normalizes '*' equivs to '*'
-    else if (semver.validRange(b) === '*') { return -1 }
+    const firstPastA = firstPast(a)
+    const firstPastB = firstPast(b)
 
-    const aMin = semver.minVersion(a).version
-    const bMin = semver.minVersion(b).version
-
-    const minCompare = semver.compare(aMin, bMin)
-    if (minCompare !== 0) {
-      return minCompare
+    if (firstPastA === null && firstPastB === null) { 
+      return 0
+    }
+    else if (firstPastA === null) {
+      return 1
+    }
+    else if (firstPastB === null) {
+      return -1
     }
     else {
-      const nextMajorAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'major' }), a)
-      const nextMajorBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'major' }), b)
-      if (nextMajorAValid === true && nextMajorBValid === true) { return 0 }
-      else if (nextMajorAValid === true) { return 1 }
-      else if (nextMajorBValid === true) { return -1 }
-      // else, let's test minor
-      const nextMinorAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'minor' }), a)
-      const nextMinorBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'minor' }), b)
-      if (nextMinorAValid === true && nextMinorBValid === true) { return 0 }
-      else if (nextMinorAValid === true) { return 1 }
-      else if (nextMinorBValid === true) { return -1 }
-      // else, let's test patch
-      const nextPatchAValid = semver.satisfies(nextVersion({ currVer : aMin, increment : 'patch' }), a)
-      const nextPatchBValid = semver.satisfies(nextVersion({ currVer : bMin, increment : 'patch' }), b)
-      if (nextPatchAValid === true && nextPatchBValid === true) { return 0 }
-      else if (nextPatchAValid === true) { return 1 }
-      else if (nextPatchBValid === true) { return -1 }
-      // else, it's a pre-release shoot out
-      const prePartA = semver.prerelease(a)[0]
-      const prePartB = semver.prerelease(b)[0]
-
-      console.log('prePartA:', prePartA) // DEBUG
-      return prePartA.localeCompare(prePartB)
+      return semver.compare(firstPastA, firstPastB)
     }
   })
 
@@ -97,11 +88,11 @@ const xSort = (versionsAndRanges) => {
         allSorted.splice(indexOfLastVersion + 1 + nextVersionOffset, 0, range)
       }
     }
-    else if (semver.ltr(sortedVersions[0], range)) {
+    else if (semver.gtr(sortedVersions[0], range)) {
       const indexOfLowestRange = allSorted.indexOf(sortedVersions[0])
       allSorted.splice(indexOfLowestRange, 0, range)
     }
-    else if (semver.gtr(sortedVersions[sortedVersions.length - 1], range)) {
+    else if (semver.ltr(sortedVersions[sortedVersions.length - 1], range)) {
       allSorted.push(range)
       allRangesGreater = true
     }

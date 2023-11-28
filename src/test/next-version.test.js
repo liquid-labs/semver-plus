@@ -28,6 +28,7 @@ describe('nextVersion', () => {
       ['1.0.0', 'premajor', '2.0.0-alpha.0'],
       ['1.0.0-alpha.1', 'pretype', '1.0.0-beta.0'],
       ['1.0.0-beta.1', 'pretype', '1.0.0-rc.0'],
+      ['1.2.3-rc.0', 'pretype', '1.2.3'],
       ['1.0.0-rc.1', 'pretype', '1.0.0'],
       ['1.0.0-alpha.1', 'beta', '1.0.0-beta.0'],
       ['1.0.0-alpha.1', 'rc', '1.0.0-rc.0'],
