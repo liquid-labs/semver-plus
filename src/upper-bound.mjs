@@ -7,7 +7,7 @@ import semver from 'semver'
  * @param {string} range - The range to find the ceiling for.
  * @returns {string} - Either '*', a specific version, or a '<version>-0'.
  */
-const upperBound = (range) => {
+const upperBound = (range, { stripOperators = false } = {}) => {
   const normalizedRange = semver.validRange(range)
   if (normalizedRange === null) {
     return null
@@ -16,7 +16,7 @@ const upperBound = (range) => {
   const ranges = normalizedRange.split(' ')
   const upperRange = ranges[ranges.length - 1]
 
-  return upperRange.startsWith('<=') ? upperRange.slice(2) : upperRange
+  return stripOperators === true ? upperRange.replace(/^[<>=]+/, '') : upperRange.replace(/^<=/, '')
 }
 
 export { upperBound }

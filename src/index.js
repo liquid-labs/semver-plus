@@ -1,6 +1,5 @@
 export * from './ext-constants'
 export * from './filter-valid-version-or-range'
-export * from './first-past'
 export * from './min-version'
 export * from './next-version'
 export * from './prerelease'

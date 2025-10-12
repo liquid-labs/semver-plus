@@ -1,7 +1,7 @@
 import semver from 'semver'
 
 import { xRangeRE } from './constants'
-import { firstPast } from './first-past'
+import { upperBound } from './upper-bound'
 
 /**
  * Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x). The ranges are sorted according to their highest version; e.g., 1.3.34 < 1.3.*. (I believe it can accept caret ranges too, but I would need to review the spec.)
@@ -38,10 +38,16 @@ const xSort = (versionsAndRanges) => {
   const sortedVersions = versions.sort(semver.compare)
 
   const sortedRanges = ranges.sort((a, b) => {
-    const firstPastA = firstPast(a)
-    const firstPastB = firstPast(b)
+    const firstPastA = upperBound(a, { stripOperators : true })
+    const firstPastB = upperBound(b, { stripOperators : true })
 
-    if (firstPastA === null && firstPastB === null) {
+    if (firstPastA === '*') {
+      return 1
+    }
+    else if (firstPastB === '*') {
+      return -1
+    }
+    else if (firstPastA === null && firstPastB === null) {
       return 0
     }
     else if (firstPastA === null) {
