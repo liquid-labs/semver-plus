@@ -20,7 +20,7 @@ const maxVersion = ({ ignoreNonVersions, versions }) => {
     return null
   }
 
-  versions = filterValidVersions(versions,{ ignoreNonVersions })
+  versions = filterValidVersions(versions, { ignoreNonVersions })
 
   return compareHelper({ semverTest : semver.lt, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }

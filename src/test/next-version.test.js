@@ -1,4 +1,4 @@
-/* global beforeAll describe expect test */
+/* global describe expect test */
 
 import * as ver from '../next-version'
 
