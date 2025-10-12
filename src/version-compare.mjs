@@ -1,91 +1,57 @@
 import semver from 'semver'
 
-import { STYLE_AUTO, STYLE_SEMVER } from './constants'
-import { isTimeVersion } from './is-time-version'
-import { versionStyle } from './version-style'
-
-const compareHelper = ({ semverTest, style, timeverTest, versions }) => {
+const compareHelper = ({ semverTest, timeverTest, versions }) => {
   let currLead
   for (let i = 0; i < versions.length; i += 1) {
     const testVer = versions[i]
     if (currLead === undefined) {
       currLead = testVer
     }
-    else if (style === STYLE_SEMVER) {
-      if (semverTest(currLead, testVer)) {
-        currLead = testVer
-      }
-    }
-    else {
-      if (timeverTest(currLead, testVer)) {
-        currLead = testVer
-      }
+    else if (semverTest(currLead, testVer)) {
+      currLead = testVer
     }
   }
 
   return currLead
 }
 
-const maxVersion = ({ ignoreNonVersions, style, versions }) => {
+const maxVersion = ({ ignoreNonVersions, versions }) => {
   if (!versions || versions.length === 0) {
     return null
   }
 
-  ([style, versions] = styleValidator({ ignoreNonVersions, style, versions }))
+  versions = filterValidVersions(versions, { ignoreNonVersions })
 
-  return compareHelper({ semverTest : semver.lt, style, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
+  return compareHelper({ semverTest : semver.lt, timeverTest : (a, b) => a.localeCompare(b) < 0, versions })
 }
 
-const minVersion = ({ ignoreNonVersions, style, versions }) => {
+const minVersion = ({ ignoreNonVersions, versions }) => {
   if (!versions || versions.length === 0) {
     return null
   }
 
-  ([style, versions] = styleValidator({ ignoreNonVersions, style, versions }))
+  versions = filterValidVersions(versions, { ignoreNonVersions })
 
-  return compareHelper({ semverTest : semver.gt, style, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
+  return compareHelper({ semverTest : semver.gt, timeverTest : (a, b) => a.localeCompare(b) > 0, versions })
 }
 
-const styleValidator = ({ ignoreNonVersions, style, versions }) => {
-  if (style === STYLE_AUTO || style === undefined) {
-    style = versions.reduce((res, v) => {
-      try {
-        if (res !== undefined) {
-          return res
-        }
-        else {
-          return versionStyle(v)
-        }
-      }
-      catch (e) {
-        if (ignoreNonVersions === true) {
-          return undefined
-        }
-        else {
-          throw e
-        }
-      }
-    }, undefined)
-  }
-
+const filterValidVersions = (versions, { ignoreNonVersions }) => {
   versions = versions.filter((version) => {
-    const valid = style === STYLE_SEMVER
-      ? semver.valid(version) !== null
-      : isTimeVersion(version)
+    const valid = semver.valid(version) !== null
 
     if (valid === false) {
       if (ignoreNonVersions === true) {
         return false
       }
       else {
-        throw new Error(`Version style mis-match; initial version of style '${style}', but '${version}' is not valid for that style.`)
+        throw new Error(`'${version}' is not a valid semver.`)
       }
     }
 
     return true
   })
 
-  return [style, versions]
+  return versions
 }
 
 export { maxVersion, minVersion }
