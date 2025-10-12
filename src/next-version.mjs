@@ -20,8 +20,13 @@ const nextVersion = ({ currVer, increment, loose = false }) => {
   if (increment !== undefined && !increments.includes(increment)) {
     throw createError.BadRequest(`Invalid increment '${increment}' specified.`)
   }
+  if (!semver.valid(currVer)) {
+    const msg = `Invalid version '${currVer}'` + (semver.validRange(currVer) ? '; range not allowed.' : '.')
+    throw createError.BadRequest(msg)
+  }
   // what are we incrementing? default is patch for released and prerelease for pre-release projects
-  increment = increment || (currVer.match(/^[\d.Z-]+$/) ? 'patch' : 'prerelease')
+  // TODO: allow 'build' /^[\d.]+(+[a-zA-Z0-9.-]+)?$/
+  increment = increment || (currVer.match(/^[\d.]+$/) ? 'patch' : 'prerelease')
 
   let nextVer
   // determine concrete value for increment
@@ -46,10 +51,10 @@ const nextVersion = ({ currVer, increment, loose = false }) => {
 
   // alpha -> beta -> rc
   if (increment === 'pretype') {
-    if (currPrerelease === 'alpha') nextVer = currVer.replace(/([0-1.Z-]+)alpha(\.\d+)?/, '$1beta.0')
-    else if (currPrerelease === 'beta') nextVer = currVer.replace(/([0-1.Z-]+)beta(\.\d+)?/, '$1rc.0')
+    if (currPrerelease === 'alpha') nextVer = currVer.replace(/([0-1.]+)-alpha(\.\d+)?/, '$1-beta.0')
+    else if (currPrerelease === 'beta') nextVer = currVer.replace(/([0-1.]+)-beta(\.\d+)?/, '$1-rc.0')
     else if (currPrerelease === 'rc') { // is special in the case of timever + pretype
-      nextVer = currVer.replace(/([0-9.Z]+)-rc(?:\.\d+)?/, '$1')
+      nextVer = currVer.replace(/([0-9.]+)-rc(?:\.\d+)?/, '$1')
     }
 
     return nextVer // we're done
@@ -64,10 +69,10 @@ const nextVersion = ({ currVer, increment, loose = false }) => {
     }
 
     if (increment === 'gold') {
-      nextVer = currVer.replace(/^([\d.Z]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
+      nextVer = currVer.replace(/^([\d.]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
     }
     else {
-      nextVer = currVer.replace(/^([\d.Z-]+)(?:alpha|beta|rc)(?:\.\d+)?/, `$1${increment}.0`)
+      nextVer = currVer.replace(/^([\d.]+)-(?:alpha|beta|rc)(?:\.\d+)?/, `$1-${increment}.0`)
     }
 
     return nextVer
