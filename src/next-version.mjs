@@ -21,7 +21,7 @@ import {
  *    means to increment the pre-release ID from 'alpha' -> 'beta' -> 'rc' -> none. Passing in a `currVer` with any
  *    other prerelease ID with a 'pretype' increment will result in undefined results
  */
-const nextVersion = ({ currVer, increment }) => {
+const nextVersion = (currVer, increment) => {
   if (!semver.valid(currVer)) {
     const msg = `Invalid version '${currVer}'` + (semver.validRange(currVer) ? '; range not allowed.' : '.')
     throw createError.BadRequest(msg)
