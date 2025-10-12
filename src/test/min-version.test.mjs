@@ -14,6 +14,7 @@ describe('minVersion', () => {
     ['1.0.x', '1.0.0'],
     ['1.0.0-alpha.x', '1.0.0-alpha.0'],
     ['1.0.0-beta.x', '1.0.0-beta.0'],
-    ['1.0.0-rc.x', '1.0.0-rc.0']
+    ['1.0.0-rc.x', '1.0.0-rc.0'],
+    ['1.0.0 - 2', '1.0.0']
   ])('%s => %s', (input, expected) => expect(minVersion(input)).toBe(expected))
 })
