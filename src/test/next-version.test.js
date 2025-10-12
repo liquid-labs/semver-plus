@@ -32,7 +32,7 @@ describe('nextVersion', () => {
     ['1.0.0-beta.1', 'rc', '1.0.0-rc.0'],
     ['1.0.0-beta.1', 'gold', '1.0.0'],
     ['1.0.0-rc.1', 'gold', '1.0.0']
-  ])("%s + '%s' -> %s", (currVer, increment, expected) => expect(ver.nextVersion({ currVer, increment })).toBe(expected))
+  ])("%s + '%s' -> %s", (currVer, increment, expected) => expect(ver.nextVersion(currVer, increment)).toBe(expected))
 
   test.each([
     ['1.0.0', 'prerelease'],
@@ -54,7 +54,7 @@ describe('nextVersion', () => {
     ['1.0.0', 'beta'],
     ['1.0.0', 'rc']
   ])('%s + %s -> throws an exception', (currVer, increment) =>
-    expect(() => ver.nextVersion({ currVer, increment })).toThrow())
+    expect(() => ver.nextVersion(currVer, increment)).toThrow())
 
   test.each([
     'prototype.1',
@@ -66,5 +66,5 @@ describe('nextVersion', () => {
   })
 
   test.each(['1.0.x', '^1.0.0', '1.0.0 - 1.x', '~1.0.0'])('raises except on range input %s', (currVer) =>
-    expect(() => ver.nextVersion({ currVer, increment : 'prerelease' })).toThrow(/range not allowed/i))
+    expect(() => ver.nextVersion(currVer, 'prerelease')).toThrow(/range not allowed/i))
 })
