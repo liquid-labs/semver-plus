@@ -1,7 +1,7 @@
 import createError from 'http-errors'
 import semver from 'semver'
 
-import { 
+import {
   STANDARD_INCREMENTS,
   STANDARD_PRERELEASE_INCREMENTS,
   STANDARD_PRERELEASE_NAMES,
@@ -36,15 +36,13 @@ const nextVersion = ({ currVer, increment }) => {
   const currPrereleaseComponents = semver.prerelease(currVer)
   const currPrerelease = currPrereleaseComponents === null ? null : currPrereleaseComponents.join('.')
   // const stdPrereleaseMatch = currVer.match(/^[\d.Z]+-(?!\d\.\d+$)([0-9A-Za-z-]+)\.\d+)$/)
-  // const 
+  // const
   const stdPrereleaseMatch = currPrerelease === null ? null : currPrerelease.match(/^(?!\d+\.\d+$)(?:([0-9A-Za-z-]+)\.)?\d+$/)
   const standardPrereleaseName = stdPrereleaseMatch === null
     ? null
     : (stdPrereleaseMatch[1] === undefined ? '' : stdPrereleaseMatch[1])
   const isStandardCurrPrerelease = STANDARD_PRERELEASE_NAMES.includes(standardPrereleaseName)
-  // TODO: when does this 'if' condition trigger?
-  if (currPrerelease === currVer) currPrerelease = null
-  
+
   // now verify the combination of inputs
   if (increment === 'pretype' && !STANDARD_PRERELEASE_NAMES.includes(standardPrereleaseName)) {
     throw createError.BadRequest(`Cannot increment type of unknown prerelease type '${currPrerelease}'. Can only increment '${STANDARD_PRERELEASE_NAMES.join(', -> ')}'.`)
@@ -98,7 +96,7 @@ const nextVersion = ({ currVer, increment }) => {
     ? semver.inc(currVer, increment, 'alpha')
     : semver.inc(currVer, increment)
 
-  return nextVer*/
+  return nextVer */
 }
 
 export { nextVersion }

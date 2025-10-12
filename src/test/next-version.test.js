@@ -3,7 +3,7 @@
 import * as ver from '../next-version'
 
 describe('nextVersion', () => {
-    test.each([
+  test.each([
     // currVer, increment, expected
     // default increment is the least significant tuple available
     ['1.0.0', undefined, '1.0.1'],
@@ -31,7 +31,7 @@ describe('nextVersion', () => {
     ['1.0.0-alpha.1', 'gold', '1.0.0'],
     ['1.0.0-beta.1', 'rc', '1.0.0-rc.0'],
     ['1.0.0-beta.1', 'gold', '1.0.0'],
-    ['1.0.0-rc.1', 'gold', '1.0.0'],
+    ['1.0.0-rc.1', 'gold', '1.0.0']
   ])("%s + '%s' -> %s", (currVer, increment, expected) => expect(ver.nextVersion({ currVer, increment })).toBe(expected))
 
   test.each([
@@ -52,7 +52,7 @@ describe('nextVersion', () => {
     ['1.0.0-rc.1', 'rc'],
     ['1.0.0', 'alpha'],
     ['1.0.0', 'beta'],
-    ['1.0.0', 'rc'],
+    ['1.0.0', 'rc']
   ])('%s + %s -> throws an exception', (currVer, increment) =>
     expect(() => ver.nextVersion({ currVer, increment })).toThrow())
 
