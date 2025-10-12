@@ -1,4 +1,4 @@
-export const increments = [
+export const STANDARD_INCREMENTS = [
   'major',
   'minor',
   'patch',
@@ -12,9 +12,12 @@ export const increments = [
   'rc',
   'gold'
 ]
-export const prereleaseIncrements = ['prerelease', 'pretype', 'alpha', 'beta', 'rc', 'gold']
-export const releaseTypes = ['alpha', 'beta', 'rc', 'gold']
 
-Object.freeze(increments)
-Object.freeze(prereleaseIncrements)
-Object.freeze(releaseTypes)
+export const STANDARD_PRERELEASE_INCREMENTS = ['prerelease', 'pretype', 'alpha', 'beta', 'rc', 'gold']
+export const STANDARD_PRERELEASE_NAMES = ['alpha', 'beta', 'rc']
+export const STANDARD_RELEASE_NAMES = [...STANDARD_PRERELEASE_NAMES, 'gold']
+
+Object.freeze(STANDARD_PRERELEASE_INCREMENTS)
+Object.freeze(STANDARD_PRERELEASE_NAMES)
+Object.freeze(STANDARD_RELEASE_NAMES)
+Object.freeze(STANDARD_INCREMENTS)
