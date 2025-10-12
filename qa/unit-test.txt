@@ -1,0 +1,32 @@
+Test git rev: 8ee192aea47c7ae4c930980057ccdd83df3708f3
+PASS test/first-past.test.js
+PASS test/next-version.test.js
+PASS test/x-sort.test.js
+PASS test/version-compare.test.js
+PASS test/upper-bound.test.js
+PASS test/valid-version-or-range.test.js
+PASS test/filter-valid-version-or-range.test.js
+PASS test/min-version.test.js
+PASS test/prerelease.test.js
+-----------------------------------|---------|----------|---------|---------|-------------------
+File                               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------------------------|---------|----------|---------|---------|-------------------
+All files                          |    93.4 |       88 |   80.95 |   94.11 |                   
+ constants.mjs                     |     100 |      100 |     100 |     100 |                   
+ ext-constants.mjs                 |     100 |      100 |     100 |     100 |                   
+ filter-valid-version-or-range.mjs |   83.33 |        0 |   66.66 |      75 | 4                 
+ first-past.mjs                    |   95.65 |      100 |     100 |   95.65 | 34                
+ min-version.mjs                   |      90 |      100 |     100 |      90 | 18                
+ next-version.mjs                  |     100 |    92.68 |     100 |     100 | 24,63,68          
+ prerelease.mjs                    |     100 |      100 |     100 |     100 |                   
+ upper-bound.mjs                   |   88.88 |    66.66 |     100 |   88.88 | 13                
+ valid-version-or-range.mjs        |   83.33 |     90.9 |      50 |   83.33 | 8                 
+ version-compare.mjs               |   93.93 |      100 |   71.42 |     100 |                   
+ x-sort.mjs                        |   89.28 |       76 |     100 |   88.88 | 27-32,45,48       
+-----------------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 9 passed, 9 total
+Tests:       115 passed, 115 total
+Snapshots:   0 total
+Time:        0.331 s, estimated 1 s
+Ran all test suites.
