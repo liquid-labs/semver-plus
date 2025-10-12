@@ -26,7 +26,7 @@ const nextVersion = ({ currVer, increment }) => {
     const msg = `Invalid version '${currVer}'` + (semver.validRange(currVer) ? '; range not allowed.' : '.')
     throw createError.BadRequest(msg)
   }
-  
+
   if (increment !== undefined && !STANDARD_INCREMENTS.includes(increment)) {
     throw createError.BadRequest(`Invalid increment '${increment}' specified.`)
   }
