@@ -22,6 +22,11 @@ import {
  *    other prerelease ID with a 'pretype' increment will result in undefined results
  */
 const nextVersion = ({ currVer, increment }) => {
+  if (!semver.valid(currVer)) {
+    const msg = `Invalid version '${currVer}'` + (semver.validRange(currVer) ? '; range not allowed.' : '.')
+    throw createError.BadRequest(msg)
+  }
+
   if (increment !== undefined && !STANDARD_INCREMENTS.includes(increment)) {
     throw createError.BadRequest(`Invalid increment '${increment}' specified.`)
   }
@@ -76,10 +81,10 @@ const nextVersion = ({ currVer, increment }) => {
   }
   else if (STANDARD_RELEASE_NAMES.includes(increment)) {
     if (increment === 'gold') {
-      nextVer = currVer.replace(/^([\d.Z]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
+      nextVer = currVer.replace(/^([\d.]+)-(?:alpha|beta|rc)(?:\.\d+)?/, '$1')
     }
     else {
-      nextVer = currVer.replace(/^([\d.Z-]+)(?:alpha|beta|rc)(?:\.\d+)?/, `$1${increment}.0`)
+      nextVer = currVer.replace(/^([\d.]+)-(?:alpha|beta|rc)(?:\.\d+)?/, `$1-${increment}.0`)
     }
 
     return nextVer

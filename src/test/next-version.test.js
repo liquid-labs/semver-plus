@@ -64,4 +64,7 @@ describe('nextVersion', () => {
     const currVer = `1.0.0-${currPrerelease}`
     expect(() => ver.version({ currVer, increment : 'prerelease' }))
   })
+
+  test.each(['1.0.x', '^1.0.0', '1.0.0 - 1.x', '~1.0.0'])('raises except on range input %s', (currVer) =>
+    expect(() => ver.nextVersion({ currVer, increment : 'prerelease' })).toThrow(/range not allowed/i))
 })
