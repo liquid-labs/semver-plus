@@ -5,6 +5,7 @@ import * as ver from '../next-version'
 describe('nextVersion', () => {
   describe('handles semver style', () => {
     test.each([
+      // currVer, increment, expected
       ['1.0.0', undefined, '1.0.1'],
       ['1.0.0-alpha.94', undefined, '1.0.0-alpha.95'],
       ['1.0.0-alpha.94', 'prerelease', '1.0.0-alpha.95'],
