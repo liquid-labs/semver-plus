@@ -1,4 +1,5 @@
-import { upperBound } from '../ceiling-range'
+/* global describe expect test */
+import { upperBound } from '../upper-bound'
 
 describe('upperBound', () => {
   test.each([
@@ -8,6 +9,6 @@ describe('upperBound', () => {
     ['1.0.0 - 2', '<3.0.0-0'],
     ['1.0.x', '<1.1.0-0'],
     ['1.0.0-alpha.1', '1.0.0-alpha.1'],
-    ['1.0 - 1.2.3', '1.2.3'],
+    ['1.0 - 1.2.3', '1.2.3']
   ])('%s => %s', (input, expected) => expect(upperBound(input)).toBe(expected))
 })
