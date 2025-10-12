@@ -12,6 +12,9 @@ describe('nextVersion', () => {
       ['1.0.0-beta.94', undefined, '1.0.0-beta.95'],
       ['1.0.0-beta.94', 'prerelease', '1.0.0-beta.95'],
       ['1.0.0-rc.94', undefined, '1.0.0-rc.95'],
+      // TODO
+      // ['1.0.0-Z.3', undefined, '1.0.0-Z.4'], // non-standard prerelease
+      // ['1.0.0-0', undefined, '1.0.0-1'], // -0 pre-release
       ['1.0.0-rc.94', 'prerelease', '1.0.0-rc.95'],
       ['1.0.0', 'patch', '1.0.1'],
       ['1.0.0', 'minor', '1.1.0'],
@@ -61,4 +64,7 @@ describe('nextVersion', () => {
     const currVer = `1.0.0-${currPrerelease}`
     expect(() => ver.version({ currVer, increment : 'prerelease' }))
   })
+
+  test.each(['1.0.x', '^1.0.0', '1.0.0 - 1.x', '~1.0.0'])('raises except on range input %s', (currVer) =>
+    expect(() => ver.nextVersion({ currVer, increment : 'prerelease' })).toThrow(/range not allowed/i))
 })
