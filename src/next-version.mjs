@@ -27,7 +27,6 @@ const nextVersion = ({ currVer, increment }) => {
   }
   const semverTupleREString = '(?:[0-9]|[1-9][0-9]+)'
   const isProductionVersion = !!currVer.match(new RegExp(`^(?:${semverTupleREString}\\.){2}${semverTupleREString}$`))
-  console.log(`*************\ncurrVer: ${currVer}\nisProductionVersion: ${isProductionVersion}\n*************`) // DEBUG
   // what are we incrementing? default is patch for production and prerelease for pre-release projects
   increment = increment || (isProductionVersion ? 'patch' : 'prerelease')
 
@@ -38,10 +37,11 @@ const nextVersion = ({ currVer, increment }) => {
   const currPrerelease = currPrereleaseComponents === null ? null : currPrereleaseComponents.join('.')
   // const stdPrereleaseMatch = currVer.match(/^[\d.Z]+-(?!\d\.\d+$)([0-9A-Za-z-]+)\.\d+)$/)
   // const 
-  const stdPrereleaseMatch = currPrerelease === null ? null : currPrerelease.match(/^(?!\d\.\d+$)([0-9A-Za-z-]+)\.\d+$/)
-  const standardPrereleaseName = stdPrereleaseMatch === null ? null : stdPrereleaseMatch[1]
+  const stdPrereleaseMatch = currPrerelease === null ? null : currPrerelease.match(/^(?!\d+\.\d+$)(?:([0-9A-Za-z-]+)\.)?\d+$/)
+  const standardPrereleaseName = stdPrereleaseMatch === null
+    ? null
+    : (stdPrereleaseMatch[1] === undefined ? '' : stdPrereleaseMatch[1])
   const isStandardCurrPrerelease = STANDARD_PRERELEASE_NAMES.includes(standardPrereleaseName)
-  console.log(`*************\ncurrPrerelease: ${currPrerelease}\nstandardPrereleaseName: ${standardPrereleaseName}\nisStandardCurrPrerelease: ${isStandardCurrPrerelease}\n*************`) // DEBUG
   // TODO: when does this 'if' condition trigger?
   if (currPrerelease === currVer) currPrerelease = null
   
@@ -55,7 +55,6 @@ const nextVersion = ({ currVer, increment }) => {
   else if (isStandardCurrPrerelease === true && STANDARD_PRERELEASE_NAMES.includes(increment)) { // implies `standardPrereleaseName !== undefined`
     const currIndex = STANDARD_PRERELEASE_NAMES.indexOf(standardPrereleaseName)
     const incrementIndex = STANDARD_PRERELEASE_NAMES.indexOf(increment)
-    console.log(`*************\ncurrPrerelease: ${currPrerelease}\ncurrIndex: ${currIndex}\nincrement: ${increment}\nincrementIndex: ${incrementIndex}\n*************`) // DEBUG
     if (incrementIndex <= currIndex) {
       throw createError.BadRequest(`Cannot move prerelease name from '${standardPrereleaseName}' to '${increment}'. Prerelease types must move forward.`)
     }
