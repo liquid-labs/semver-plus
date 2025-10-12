@@ -1,0 +1,30 @@
+Test git rev: da119dbc3f8025ceac5e5a3166d69fa742d8092a
+PASS test/valid-version-or-range.test.js
+PASS test/next-version.test.js
+PASS test/version-compare.test.js
+PASS test/x-sort.test.js
+PASS test/min-version.test.js
+PASS test/filter-valid-version-or-range.test.js
+PASS test/upper-bound.test.js
+PASS test/prerelease.test.js
+-----------------------------------|---------|----------|---------|---------|-------------------
+File                               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------------------------|---------|----------|---------|---------|-------------------
+All files                          |   92.43 |    89.38 |      80 |   94.25 |                   
+ constants.mjs                     |     100 |      100 |     100 |     100 |                   
+ ext-constants.mjs                 |     100 |      100 |     100 |     100 |                   
+ filter-valid-version-or-range.mjs |   83.33 |        0 |   66.66 |     100 | 3                 
+ min-version.mjs                   |      90 |      100 |     100 |      90 | 18                
+ next-version.mjs                  |     100 |    98.03 |     100 |     100 | 26                
+ prerelease.mjs                    |     100 |      100 |     100 |     100 |                   
+ upper-bound.mjs                   |   88.88 |       80 |     100 |   88.88 | 13                
+ valid-version-or-range.mjs        |   83.33 |    91.66 |      50 |     100 | 5                 
+ version-compare.mjs               |   93.93 |      100 |   71.42 |     100 |                   
+ x-sort.mjs                        |   86.66 |    72.41 |     100 |    86.2 | 27-32,45,51,54,57 
+-----------------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 8 passed, 8 total
+Tests:       114 passed, 114 total
+Snapshots:   0 total
+Time:        0.313 s, estimated 1 s
+Ran all test suites.
