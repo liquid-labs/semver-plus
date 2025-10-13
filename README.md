@@ -19,6 +19,7 @@ _API generated with [dmd-readme-api](https://www.npmjs.com/package/dmd-readme-ap
     - [`rcompare()`](#rcompare): Reverse of [compare](#compare).
     - [`rsort()`](#rsort): Sorts an array of versions in descending order using [compareBuild](#compareBuild).
     - [`sort()`](#sort): Sorts an array of versions in ascending order using [compareBuild](#compareBuild).
+    - [`xSort()`](#xSort): Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x).
   - <span id="global-function-Range-operations-index"></span>_Range operations_
     - [`gtr()`](#gtr): Returns `true` if `version` is greater than is greater than any version in `range`, `false` otherwise.
     - [`intersects()`](#intersects): Returns `true` if any of the comparators in the range intersect with each other.
@@ -30,11 +31,10 @@ _API generated with [dmd-readme-api](https://www.npmjs.com/package/dmd-readme-ap
     - [`satisfies()`](#satisfies): Returns `true` if the version satisfies the range, `false` otherwise.
     - [`simplifyRange()`](#simplifyRange): Return a "simplified" range that matches the same items in the versions list as the range specified.
     - [`subset()`](#subset): Returns `true` if `subRange` is a subset of `superRange`, `false` otherwise.
+    - [`upperBound()`](#upperBound): Finds the ceiling of a range.
     - [`validRange()`](#validRange): Returns a parsed, normalized range string or null if the range is invalid.
   - [`maxSatisfyingVersionString()`](#maxSatisfyingVersionString): Like [maxVersion](maxVersion) but returns a string instead of a version object.
   - [`minSatisfyingVersionString()`](#minSatisfyingVersionString): Like [minVersion](#minVersion) but returns a string instead of a version object.
-  - [`upperBound()`](#upperBound): Finds the ceiling of a range.
-  - [`xSort()`](#xSort): Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x).
   - <span id="global-function-Version-operations-index"></span>_Version operations_
     - [`clean()`](#clean): Returns a cleaned version string removing unecessary comparators and, if `options.loose` is true, fixing space issues.
     - [`coerce()`](#coerce): Aggressively attempts to coerce a string into a valid semver string.
@@ -285,6 +285,20 @@ Sorts an array of versions in ascending order using [compareBuild](#compareBuild
 
 __Category__: [Comparison operations](#global-function-Comparison-operations-index)
 
+<a id="xSort"></a>
+### `xSort(versionsAndRanges)` ⇒ `Array.<string>` <sup>↱<sup>[source code](./src/x-sort.mjs#L12)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+
+Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x). The ranges are sorted according to their highest version; e.g., 1.3.34 < 1.3.*. (I believe it can accept caret ranges too, but I would need to review the spec.)
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `versionsAndRanges` | `Array.<string>` | The versions and ranges to sort. |
+
+**Returns**: `Array.<string>` - - The sorted versions and ranges.
+
+__Category__: [Comparison operations](#global-function-Comparison-operations-index)
+
 <a id="gtr"></a>
 ### `gtr(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L62)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
@@ -370,7 +384,7 @@ Returns the lowest version in `versions` that satisfies the range, or null if no
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="minVersion"></a>
-### `minVersion(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/min-version-string.mjs#L18)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `minVersion(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/min-version.mjs#L18)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns the lowest version that satisfies the range, or null if no version satisfies the range. This implementation
 differs from the base `semver.minVersion` in that it correctly handles simple prerelease x-ranges. E.g.,
@@ -463,6 +477,22 @@ Returns `true` if `subRange` is a subset of `superRange`, `false` otherwise.
 
 __Category__: [Range operations](#global-function-Range-operations-index)
 
+<a id="upperBound"></a>
+### `upperBound(range)` ⇒ `string` <sup>↱<sup>[source code](./src/upper-bound.mjs#L11)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+
+Finds the ceiling of a range. For '*', the ceiling is '*'. For specific versions or any range capped by a specific
+version, the ceiling is that version. For any open-ended range, the ceiling is defined by a '<version>-0' range
+function where 'verision-0' least range above the given range.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `range` | `string` | The range to find the ceiling for. |
+
+**Returns**: `string` - - Either '*', a specific version, or a '<version>-0'.
+
+__Category__: [Range operations](#global-function-Range-operations-index)
+
 <a id="validRange"></a>
 ### `validRange(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L14)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
@@ -506,25 +536,6 @@ Like [minVersion](#minVersion) but returns a string instead of a version object.
 | `options.ignoreNonVersions` | `boolean` | Whether to ignore non-version strings. |
 
 **Returns**: `string` \| `null` - - The minimum version string or null if no version strings are provided.
-
-<a id="upperBound"></a>
-### `upperBound(range)` ⇒ `string` <sup>↱<sup>[source code](./src/upper-bound.mjs#L10)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
-
-Finds the ceiling of a range. For '*', the ceiling is '*'. For specific versions or any range capped by a specific
-version, the ceiling is that version. For any open-ended range, the ceiling is defined by a '<version>-0' range
-function where 'verision-0' least range above the given range.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| `range` | `string` | The range to find the ceiling for. |
-
-**Returns**: `string` - - Either '*', a specific version, or a '<version>-0'.
-
-<a id="xSort"></a>
-### `xSort()` <sup>↱<sup>[source code](./src/x-sort.mjs#L9)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
-
-Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x). The ranges are sorted according to their highest version; e.g., 1.3.34 < 1.3.*. (I believe it can accept caret ranges too, but I would need to review the spec.)
 
 <a id="clean"></a>
 ### `clean(version, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-version-ops.mjs#L109)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>

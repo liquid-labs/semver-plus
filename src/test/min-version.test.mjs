@@ -1,7 +1,7 @@
 /* global describe expect test */
 import semver from 'semver'
 
-import { minVersion } from '../min-version-string'
+import { minVersion } from '../min-version'
 
 describe('minVersionString', () => {
   test('verify semver prerelease bug', () => {
