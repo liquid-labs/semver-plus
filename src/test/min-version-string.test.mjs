@@ -1,14 +1,15 @@
+/* global describe expect test */
 import semver from 'semver'
 
-import { minVersionString } from '../min-version-string'
+import { minVersion } from '../min-version-string'
 
 describe('minVersionString', () => {
   test('verify semver prerelease bug', () => {
     // we want to make sure we have the actual semver and not our local, which may have wrapper logic to fix this
     expect(semver.minVersion('1.0.0-alpha.x').toString()).toBe('1.0.0-alpha.x') // correct
     expect(semver.minVersion('1.0.0-alpha.x', { includePrerelease : true }).toString()).toBe('1.0.0-alpha.x') // incorrect
-})
-  
+  })
+
   test.each([
     // X-ranges
     ['*', '0.0.0'],
@@ -35,6 +36,6 @@ describe('minVersionString', () => {
     ['^1.2.3', '1.2.3'],
     ['^1.2', '1.2.0'],
     ['^1', '1.0.0'],
-    ['^1.2.3-alpha.2', '1.2.3-alpha.2'],
-  ])('%s => %s', (input, expected) => expect(minVersionString(input)).toBe(expected))
+    ['^1.2.3-alpha.2', '1.2.3-alpha.2']
+  ])('%s => %s', (input, expected) => expect(minVersion(input)?.toString()).toBe(expected))
 })

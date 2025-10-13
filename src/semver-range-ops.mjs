@@ -1,11 +1,15 @@
 import semver from 'semver'
 
+// note `minVersion` is overriden and defined in `min-version.mjs`
+
 /**
  * Returns a parsed, normalized range string or null if the range is invalid.
  * @param {string} range - The range to parse.
  * @param {object} options - The options to pass to the semver.validRange function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string|null} - The parsed, normalized range string or null if the range is invalid.
+ * @category Range operations
+ * @function
  */
 export const validRange = semver.validRange
 
@@ -16,6 +20,8 @@ export const validRange = semver.validRange
  * @param {object} options - The options to pass to the semver.satisfies function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if the version satisfies the range, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const satisfies = semver.satisfies
 
@@ -26,6 +32,8 @@ export const satisfies = semver.satisfies
  * @param {object} options - The options to pass to the semver.maxSatisfying function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string|null} - The highest version that satisfies the range, or null if no version satisfies the range.
+ * @category Range operations
+ * @function
  */
 export const maxSatisfying = semver.maxSatisfying
 
@@ -36,19 +44,10 @@ export const maxSatisfying = semver.maxSatisfying
  * @param {object} options - The options to pass to the semver.minSatisfying function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string|null} - The lowest version that satisfies the range, or null if no version satisfies the range.
+ * @category Range operations
+ * @function
  */
 export const minSatisfying = semver.minSatisfying
-
-/**
- * Returns the lowest version that satisfies the range, or null if no version satisfies the range. Note, to correctly
- * handle `minVersion('1.0.0-alpha.x)`, you must pass `options.includePrerelease = true`.
- * @param {string} range - The range to check.
- * @param {object} options - The options to pass to the semver.minVersion function.
- * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
- * @param {boolean} options.includePrerelease - Whether to include prerelease versions.
- * @returns {string|null} - The lowest version that satisfies the range, or null if no version satisfies the range.
- */
-export const minVersion = semver.minVersion
 
 /**
  * Returns `true` if `version` is greater than is greater than any version in `range`, `false` otherwise.
@@ -57,6 +56,8 @@ export const minVersion = semver.minVersion
  * @param {object} options - The options to pass to the semver.gtr function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `version` is greater than is greater than any version in `range`, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const gtr = semver.gtr
 
@@ -67,6 +68,8 @@ export const gtr = semver.gtr
  * @param {object} options - The options to pass to the semver.ltr function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `version` is less than is less than any version in `range`, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const ltr = semver.ltr
 
@@ -79,6 +82,8 @@ export const ltr = semver.ltr
  * @param {object} options - The options to pass to the semver.outside function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `version` is outside of `range` in the indicated direction, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const outside = semver.outside
 
@@ -88,6 +93,8 @@ export const outside = semver.outside
  * @param {object} options - The options to pass to the semver.intersects function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if any of the comparators in the range intersect with each other, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const intersects = semver.intersects
 
@@ -102,6 +109,8 @@ export const intersects = semver.intersects
  * @param {object} options - The options to pass to the semver.simplifyRange function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string} - The simplified range.
+ * @category Range operations
+ * @function
  */
 export const simplifyRange = semver.simplifyRange
 
@@ -112,5 +121,7 @@ export const simplifyRange = semver.simplifyRange
  * @param {object} options - The options to pass to the semver.subset function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `subRange` is a subset of `superRange`, `false` otherwise.
+ * @category Range operations
+ * @function
  */
 export const subset = semver.subset

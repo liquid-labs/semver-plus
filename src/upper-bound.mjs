@@ -6,6 +6,7 @@ import semver from 'semver'
  * function where 'verision-0' least range above the given range.
  * @param {string} range - The range to find the ceiling for.
  * @returns {string} - Either '*', a specific version, or a '<version>-0'.
+ * @category Range operations
  */
 const upperBound = (range, { stripOperators = false } = {}) => {
   const normalizedRange = semver.validRange(range)

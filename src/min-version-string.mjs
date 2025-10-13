@@ -1,23 +1,27 @@
-import { prereleaseXRangeRE } from './constants'
-import { setDefaultOptions } from './lib/set-default-options'
-import { minVersion, validRange } from './semver-range-ops'
+import semver from 'semver'
 
-const minVersionString = (range, options) => {
-    options = setDefaultOptions(options)
-    // given range '1.0.0-alpha.x', semver treats that as a specific version and says the min version is
-    // '1.0.0-alpha.x' even when 'options.includePrerelease' is true; this is verified in the unit tests.
-    console.log(`********\nrange: ${range}\noptions: ${JSON.stringify(options)}\n********`) // DEBUG
-    if (options.includePrerelease === true && range.match(prereleaseXRangeRE)) {
+import { prereleaseXRangeRE } from './constants'
+
+/**
+ * Returns the lowest version that satisfies the range, or null if no version satisfies the range. This implementation
+ * differs from the base `semver.minVersion` in that it correctly handles simple prerelease x-ranges. E.g.,
+ * '1.0.0-alpha.x' -> '1.0.0-alpha.0'. To suppress this behavior, pass `options.compat = true`.
+ * @param {string} range - The range to check.
+ * @param {object} options - The options to pass to the semver.minVersion function.
+ * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
+ * @param {boolean} options.includePrerelease - Whether to include prerelease versions.
+ * @param {boolean} options.compat - If true, prerelease ranges are treated the same as in the base semver package;
+ * e.g. `minVersion('1.0.0-alpha.x', { compat: true })` -> '1.0.0-alpha.x'.
+ * @returns {string|null} - The lowest version that satisfies the range, or null if no version satisfies the range.
+ * @category Range operations
+ */
+const minVersion = (range, options) => {
+    // we have to do this first, because semver does not recognize prerelease X-ranges ending with '*' (even though it
+    // does recognize these as valid ranges)
+    if (options?.compat !== true && range.match(prereleaseXRangeRE)) {
         return range.slice(0, -1) + '0'
     }
-    else {
-        const semverRange = validRange(range)
-        if (semverRange !== null) {
-            return minVersion(semverRange, options).version
-        }
-    }
-    // else
-    throw new Error(`Invaid range '${range}'.`)
+    return semver.minVersion(range, options)
 }
 
-export { minVersionString }
+export { minVersion }

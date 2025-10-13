@@ -7,6 +7,8 @@ import semver from 'semver'
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @param {boolean} options.includePrerelease - Whether to include prerelease versions.
  * @returns {string|null} - The parsed, normalized version string or null if the version is invalid.
+ * @category Version operations
+ * @function
  */
 export const valid = semver.valid
 
@@ -19,8 +21,10 @@ export const valid = semver.valid
  * @param {boolean} options.includePrerelease - Whether to include prerelease versions.
  * @param {string} identifier - Used to specify the prerelease name for prerelease increments.
  * @param {false|0|1} identifierBase - When incrementing to a new prerelease name, specifies the base number or
- * `false` for no number. 
+ * `false` for no number.
  * @returns {string} - The new version string.
+ * @category Version operations
+ * @function
  */
 export const inc = semver.inc
 
@@ -31,6 +35,8 @@ export const inc = semver.inc
  * @param {object} options - The options to pass to the semver.inc function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string[]|null} - The prerelease components or `null` if the version is not a prerelease.
+ * @category Version operations
+ * @function
  */
 export const prerelease = semver.prerelease
 
@@ -40,6 +46,8 @@ export const prerelease = semver.prerelease
  * @param {object} options - The options to pass to the semver.major function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - The major version number.
+ * @category Version operations
+ * @function
  */
 export const major = semver.major
 
@@ -49,6 +57,8 @@ export const major = semver.major
  * @param {object} options - The options to pass to the semver.minor function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - The minor version number.
+ * @category Version operations
+ * @function
  */
 export const minor = semver.minor
 
@@ -58,11 +68,15 @@ export const minor = semver.minor
  * @param {object} options - The options to pass to the semver.patch function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - The patch version number.
+ * @category Version operations
+ * @function
  */
 export const patch = semver.patch
 
 /**
  * Attempts to parse and normalize a string as a semver string. An aliase for {@link valid}.
+ * @category Version operations
+ * @function
  */
 export const parse = semver.parse
 
@@ -77,6 +91,8 @@ export const parse = semver.parse
  * @param {boolean} options.rtl - Instead of searching for a digit from the left, start searching from the right.
  * true, then they are preserved.
  * @returns {string|null} - The coerced version string or null if the version is invalid.
+ * @category Version operations
+ * @function
  */
 export const coerce = semver.coerce
 
@@ -87,5 +103,7 @@ export const coerce = semver.coerce
  * @param {object} options - The options to pass to the semver.clean function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string|null} - The cleaned version string or null if the version is invalid.
+ * @category Version operations
+ * @function
  */
 export const clean = semver.clean

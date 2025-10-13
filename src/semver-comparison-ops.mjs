@@ -7,6 +7,8 @@ import semver from 'semver'
  * @param {object} options - The options to pass to the semver.gt function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is greater than `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const gt = semver.gt
 
@@ -17,9 +19,10 @@ export const gt = semver.gt
  * @param {object} options - The options to pass to the semver.gte function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is greater than or equal to `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const gte = semver.gte
-
 
 /**
  * Returns `true` if `v1` is less than `v2`, `false` otherwise.
@@ -28,6 +31,8 @@ export const gte = semver.gte
  * @param {object} options - The options to pass to the semver.lt function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is less than `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const lt = semver.lt
 
@@ -38,9 +43,10 @@ export const lt = semver.lt
  * @param {object} options - The options to pass to the semver.lte function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is less than or equal to `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const lte = semver.lte
-
 
 /**
  * Returns `true` if `v1` is equal to `v2`, `false` otherwise.
@@ -49,6 +55,8 @@ export const lte = semver.lte
  * @param {object} options - The options to pass to the semver.eq function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is equal to `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const eq = semver.eq
 
@@ -59,6 +67,8 @@ export const eq = semver.eq
  * @param {object} options - The options to pass to the semver.neq function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {boolean} - `true` if `v1` is not equal to `v2`, `false` otherwise.
+ * @category Comparison operations
+ * @function
  */
 export const neq = semver.neq
 
@@ -71,6 +81,8 @@ export const neq = semver.neq
  * @param {object} options - The options to pass to the semver.cmp function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - A number indicating whether a version is greater than, equal to, or less than another version.
+ * @category Comparison operations
+ * @function
  */
 export const cmp = semver.cmp
 
@@ -82,6 +94,8 @@ export const cmp = semver.cmp
  * @param {object} options - The options to pass to the semver.compare function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - 0 if `v1 == v2`, 1 if `v1 > v2`, and -1 if `v1 < v2`.
+ * @category Comparison operations
+ * @function
  */
 export const compare = semver.compare
 
@@ -92,6 +106,8 @@ export const compare = semver.compare
  * @param {object} options - The options to pass to the semver.compareBuild function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - 0 if `v1 == v2`, 1 if `v1 > v2`, and -1 if `v1 < v2`.
+ * @category Comparison operations
+ * @function
  */
 export const compareBuild = semver.compareBuild
 
@@ -102,6 +118,8 @@ export const compareBuild = semver.compareBuild
  * @param {object} options - The options to pass to the semver.rcompare function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {number} - 0 if `v1 == v2`, -1 if `v1 > v2`, and 1 if `v1 < v2`.
+ * @category Comparison operations
+ * @function
  */
 export const rcompare = semver.rcompare
 
@@ -110,17 +128,10 @@ export const rcompare = semver.rcompare
  * @param {string} v1 - The first version to compare.
  * @param {string} v2 - The second version to compare.
  * @returns {number} - 0 if `v1 == v2`, 1 if `v1 > v2`, and -1 if `v1 < v2`.
+ * @category Comparison operations
+ * @function
  */
 export const compareLoose = semver.compareLoose
-
-/**
- * Returns a parsed, normalized range string or null if the range is invalid.
- * @param {string} range - The range to parse.
- * @param {object} options - The options to pass to the semver.validRange function.
- * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
- * @returns {string|null} - The parsed, normalized range string or null if the range is invalid.
- */
-export const validRange = semver.validRange
 
 /**
  * Returns the difference between two versions. I.e., the most significant version component by which `v1` and `v2`
@@ -131,6 +142,8 @@ export const validRange = semver.validRange
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string|null} - `major`, 'minor', 'patch', 'prerelease', 'premajor', 'preminor', or 'prepatch' or null if
  * the `v1` and `v2` are identical (disregarding build metadata).
+ * @category Comparison operations
+ * @function
  */
 export const diff = semver.diff
 
@@ -140,6 +153,8 @@ export const diff = semver.diff
  * @param {object} options - The options to pass to the semver.sort function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string[]} - The sorted versions.
+ * @category Comparison operations
+ * @function
  */
 export const sort = semver.sort
 
@@ -149,5 +164,7 @@ export const sort = semver.sort
  * @param {object} options - The options to pass to the semver.rsort function.
  * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
  * @returns {string[]} - The sorted versions.
+ * @category Comparison operations
+ * @function
  */
 export const rsort = semver.rsort

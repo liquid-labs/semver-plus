@@ -11,13 +11,13 @@ import { compareHelper } from './lib/compare-helper'
  * @returns {string|null} - The minimum version string or null if no version strings are provided.
 */
 const minSatisfyingVersionString = (versions, { ignoreNonVersions } = {}) => {
-if (!versions || versions.length === 0) {
+  if (!versions || versions.length === 0) {
     return null
-}
+  }
 
-versions = filterValidVersions(versions, { ignoreNonVersions })
+  versions = filterValidVersions(versions, { ignoreNonVersions })
 
-return compareHelper(versions, semver.gt)
+  return compareHelper(versions, semver.gt)
 }
 
 export { minSatisfyingVersionString }

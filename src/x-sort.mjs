@@ -5,6 +5,9 @@ import { upperBound } from './upper-bound'
 
 /**
  * Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* or 1.2.x). The ranges are sorted according to their highest version; e.g., 1.3.34 < 1.3.*. (I believe it can accept caret ranges too, but I would need to review the spec.)
+ * @param {string[]} versionsAndRanges - The versions and ranges to sort.
+ * @returns {string[]} - The sorted versions and ranges.
+ * @category Comparison operations
  */
 const xSort = (versionsAndRanges) => {
   // TODO: to sort any range type, develop 'minOutOfRange' and use those to sort ranges
