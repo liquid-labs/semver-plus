@@ -49,8 +49,9 @@ const validVersionOrRange = (input = throw new Error("'input' is required."), {
   // throw an exception if the string is invalid and `options.throwIfInvalid` is `true`
   if (normalized === null && throwIfInvalid === true) {
     const msg = `'${input}' is not a valid `
-      + `${disallowVersions === true ? 'range exclusive of versions' : 
-            (disallowRanges === true ? 'version' : 'version or range')}.`
+      + `${disallowVersions === true
+        ? 'range exclusive of versions'
+        : (disallowRanges === true ? 'version' : 'version or range')}.`
     throw new Error(msg)
   }
 

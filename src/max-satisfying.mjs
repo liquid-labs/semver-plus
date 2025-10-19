@@ -29,7 +29,7 @@ export const maxSatisfying = (versions, range, options) => {
     validVersionOrRange([range], { ...options, disallowVersions : true })
   }
 
-  if (true) { // (options?.compat === true) {
+  if (options?.compat === true) {
     return semver.maxSatisfying(versions, range, options)
   }
 
