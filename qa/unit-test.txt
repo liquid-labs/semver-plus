@@ -1,0 +1,34 @@
+Test git rev: f737b5021eab609ac3217fea534083ae97af229f
+PASS test/valid-version-or-range.test.js
+PASS test/next-version.test.js
+PASS test/max-satisfying.test.js
+PASS test/x-sort.test.js
+PASS test/prerelease.test.js
+PASS test/min-version.test.js
+PASS test/upper-bound.test.js
+-----------------------------|---------|----------|---------|---------|-------------------
+File                         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------------------|---------|----------|---------|---------|-------------------
+All files                    |   86.42 |    82.39 |      75 |   86.97 |                   
+ src                         |   92.71 |    87.96 |      90 |   93.03 |                   
+  constants.mjs              |     100 |      100 |     100 |     100 |                   
+  ext-constants.mjs          |     100 |      100 |     100 |     100 |                   
+  max-satisfying.mjs         |   93.75 |      100 |     100 |   93.75 | 29                
+  min-version.mjs            |     100 |    85.71 |     100 |     100 | 22                
+  next-version.mjs           |     100 |    98.03 |     100 |     100 | 25                
+  semver-comparison-ops.mjs  |     100 |      100 |     100 |     100 |                   
+  semver-range-ops.mjs       |     100 |      100 |     100 |     100 |                   
+  semver-version-ops.mjs     |     100 |      100 |     100 |     100 |                   
+  upper-bound.mjs            |   88.88 |       80 |     100 |   88.88 | 14                
+  valid-version-or-range.mjs |   77.27 |    83.33 |      50 |   80.95 | 32,38-41          
+  x-sort.mjs                 |   86.66 |    72.41 |     100 |    86.2 | 30-35,48,54,57,60 
+ src/lib                     |       0 |        0 |       0 |       0 |                   
+  compare-helper.mjs         |       0 |        0 |       0 |       0 | 1-14              
+  set-default-options.mjs    |       0 |        0 |       0 |       0 | 1-10              
+-----------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 7 passed, 7 total
+Tests:       128 passed, 128 total
+Snapshots:   0 total
+Time:        0.387 s, estimated 1 s
+Ran all test suites.
