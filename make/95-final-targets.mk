@@ -2,26 +2,27 @@
 # to https://npmjs.com/package/@liquid-labs/sdlc-projects-workflow-node-build for
 # further details
 
+.DEFAULT_GOAL:=all
+
 .PRECIOUS: $(PRECIOUS_TARGETS)
 
 build: $(BUILD_TARGETS)
+.PHONY+= build
 
-PHONY_TARGETS+=build
+all: build doc
+.PHONY+= all
 
-all: build
+doc: $(DOC_TARGETS)
+.PHONY+= doc
 
 lint: $(LINT_TARGETS)
-
 lint-fix: $(LINT_FIX_TARGETS)
-
-PHONY_TARGETS+=lint lint-fix
+.PHONY+=lint lint-fix
 
 test: $(TEST_TARGETS)
-
-PHONY_TARGETS+= test
+.PHONY+= test
 
 qa: test lint
+.PHONY+=qa
 
-PHONY_TARGETS+=qa
-
-.PHONY: $(PHONY_TARGETS)
+.PHONY: $(.PHONY)

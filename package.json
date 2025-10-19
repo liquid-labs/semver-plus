@@ -5,10 +5,11 @@
   "main": "dist/semver-plus.js",
   "scripts": {
     "build": "make build",
+    "doc": "make doc",
     "lint": "make lint",
     "lint:fix": "make lint-fix",
     "test": "make test",
-    "preversion": "npm run qa",
+    "preversion": "npm run qa && npm run doc",
     "prepack": "npm run build",
     "qa": "make qa"
   },

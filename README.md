@@ -33,8 +33,7 @@ _API generated with [dmd-readme-api](https://www.npmjs.com/package/dmd-readme-ap
     - [`subset()`](#subset): Returns `true` if `subRange` is a subset of `superRange`, `false` otherwise.
     - [`upperBound()`](#upperBound): Finds the ceiling of a range.
     - [`validRange()`](#validRange): Returns a parsed, normalized range string or null if the range is invalid.
-  - [`maxSatisfyingVersionString()`](#maxSatisfyingVersionString): Like [maxVersion](maxVersion) but returns a string instead of a version object.
-  - [`minSatisfyingVersionString()`](#minSatisfyingVersionString): Like [minVersion](#minVersion) but returns a string instead of a version object.
+  - [`validVersionOrRange()`](#validVersionOrRange): Validates a string to be a valid version or range.
   - <span id="global-function-Version-operations-index"></span>_Version operations_
     - [`clean()`](#clean): Returns a cleaned version string removing unecessary comparators and, if `options.loose` is true, fixing space issues.
     - [`coerce()`](#coerce): Aggressively attempts to coerce a string into a valid semver string.
@@ -300,7 +299,7 @@ Ascend sorts a mix of semver versions and x-range specified ranges (e.g., 1.2.* 
 __Category__: [Comparison operations](#global-function-Comparison-operations-index)
 
 <a id="gtr"></a>
-### `gtr(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L62)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `gtr(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L52)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if `version` is greater than is greater than any version in `range`, `false` otherwise.
 
@@ -317,7 +316,7 @@ Returns `true` if `version` is greater than is greater than any version in `rang
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="intersects"></a>
-### `intersects(range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L99)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `intersects(range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L89)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if any of the comparators in the range intersect with each other.
 
@@ -333,7 +332,7 @@ Returns `true` if any of the comparators in the range intersect with each other.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="ltr"></a>
-### `ltr(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L74)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `ltr(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L64)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if `version` is less than is less than any version in `range`, `false` otherwise.
 
@@ -350,9 +349,13 @@ Returns `true` if `version` is less than is less than any version in `range`, `f
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="maxSatisfying"></a>
-### `maxSatisfying(versions, range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L38)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `maxSatisfying(versions, range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/max-satisfying.mjs#L26)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
-Returns the highest version in `versions` that satisfies the range, or null if no version satisfies the range.
+Returns the highest version in `versions` that satisfies the range, or null if no version satisfies the range. This
+implementation differs from the base `semver.maxSatisfying` in that it correctly handles the following case:
+`maxSatisfying(['1.0.0-alpha.0', '1.0.0'], '<1.0.0')` -> '1.0.0-alpha.0'. The base `semver.maxSatisfying` function
+returns `null` in this case. Note, support for this syntax is not comprehensive and more complicated expressions are
+likely to yield incorrect results.
 
 
 | Param | Type | Description |
@@ -360,14 +363,17 @@ Returns the highest version in `versions` that satisfies the range, or null if n
 | `versions` | `Array.<string>` | The versions to check. |
 | `range` | `string` | The range to check. |
 | `options` | `object` | The options to pass to the semver.maxSatisfying function. |
+| `options.compat` | `boolean` | If true, then uses the base `semver.maxSatisfying` function. |
 | `options.loose` | `boolean` | Allow non-conforming, but recognizable semver strings. |
+| `options.includePrerelease` | `boolean` | Include prerelease versions in the result. This is effectively implied if the range contains prerelease components. |
+| `options.throwIfInvalid` | `boolean` | If true, throws an exception if any version or the range is invalid. |
 
 **Returns**: `string` \| `null` - - The highest version that satisfies the range, or null if no version satisfies the range.
 
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="minSatisfying"></a>
-### `minSatisfying(versions, range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L50)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `minSatisfying(versions, range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L40)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns the lowest version in `versions` that satisfies the range, or null if no version satisfies the range.
 
@@ -384,11 +390,12 @@ Returns the lowest version in `versions` that satisfies the range, or null if no
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="minVersion"></a>
-### `minVersion(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/min-version.mjs#L18)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `minVersion(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/min-version.mjs#L19)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns the lowest version that satisfies the range, or null if no version satisfies the range. This implementation
 differs from the base `semver.minVersion` in that it correctly handles simple prerelease x-ranges. E.g.,
-'1.0.0-alpha.x' -> '1.0.0-alpha.0'. To suppress this behavior, pass `options.compat = true`.
+'1.0.0-alpha.x' -> '1.0.0-alpha.0'. To suppress this behavior, pass `options.compat = true`. Note, support for this
+syntax is not comprehensive and more complicated expressions are likely to yield incorrect results.
 
 
 | Param | Type | Description |
@@ -404,7 +411,7 @@ differs from the base `semver.minVersion` in that it correctly handles simple pr
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="outside"></a>
-### `outside(version, range, direction, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L88)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `outside(version, range, direction, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L78)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if `version` is outside of `range` in the indicated direction, `false` otherwise. `outside(v, r, '>)`
 is equivalent to `gtr(v, r)`.
@@ -423,7 +430,7 @@ is equivalent to `gtr(v, r)`.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="satisfies"></a>
-### `satisfies(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L26)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `satisfies(version, range, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L28)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if the version satisfies the range, `false` otherwise.
 
@@ -440,7 +447,7 @@ Returns `true` if the version satisfies the range, `false` otherwise.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="simplifyRange"></a>
-### `simplifyRange(versions, range, options)` ⇒ `string` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L115)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `simplifyRange(versions, range, options)` ⇒ `string` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L105)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Return a "simplified" range that matches the same items in the versions list as the range specified. Note that it
 does not guarantee that it would match the same versions in all cases, only for the set of versions provided. This
@@ -461,7 +468,7 @@ then that is returned.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="subset"></a>
-### `subset(subRange, superRange, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L127)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `subset(subRange, superRange, options)` ⇒ `boolean` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L117)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns `true` if `subRange` is a subset of `superRange`, `false` otherwise.
 
@@ -494,7 +501,7 @@ function where 'verision-0' least range above the given range.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="validRange"></a>
-### `validRange(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L14)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `validRange(range, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-range-ops.mjs#L16)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Returns a parsed, normalized range string or null if the range is invalid.
 
@@ -509,33 +516,26 @@ Returns a parsed, normalized range string or null if the range is invalid.
 
 __Category__: [Range operations](#global-function-Range-operations-index)
 
-<a id="maxSatisfyingVersionString"></a>
-### `maxSatisfyingVersionString(versions, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/max-satisfying-version-string.mjs#L13)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+<a id="validVersionOrRange"></a>
+### `validVersionOrRange(input, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/valid-version-or-range.mjs#L20)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
-Like [maxVersion](maxVersion) but returns a string instead of a version object.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| `versions` | `Array.<string>` | The versions to compare. |
-| `options` | `object` | The options to pass to the compareHelper function. |
-| `options.ignoreNonVersions` | `boolean` | Whether to ignore non-version strings. |
-
-**Returns**: `string` \| `null` - - The maximum version string or null if no version strings are provided.
-
-<a id="minSatisfyingVersionString"></a>
-### `minSatisfyingVersionString(versions, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/min-satisfying-version-string.mjs#L13)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
-
-Like [minVersion](#minVersion) but returns a string instead of a version object.
+Validates a string to be a valid version or range. By default, an exception is raised unless `options.disallowVersions`
+is `true`, in which case it filters out invalid strings and returns a new array.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| `versions` | `Array.<string>` | The versions to compare. |
-| `options` | `object` | The options to pass to the compareHelper function. |
-| `options.ignoreNonVersions` | `boolean` | Whether to ignore non-version strings. |
+| `input` | `string` | The string to validate. |
+| `options` | `object` | The options to pass to the semver.valid function. |
+| `options.disallowRanges` | `boolean` | Whether to disallow ranges. |
+| `options.disallowVersions` | `boolean` | Whether to disallow versions and ranges which are valid versions. |
+| `options.includePrerelease` | `boolean` | Whether to include prerelease versions. |
+| `options.loose` | `boolean` | Allow non-conforming, but recognizable semver strings. |
+| `options.onlyXRange` | `boolean` | Whether to only allow x-ranges. Note, even if this is `true`, and a valid x-range is presented, the returned string will still be normalized. |
+| `options.throwIfInvalid` | `boolean` | If true, throws an exception if the string is invalid. |
 
-**Returns**: `string` \| `null` - - The minimum version string or null if no version strings are provided.
+**Returns**: `string` \| `null` - - A normalized version or range string or `null` if the string is invalid (if
+`options.throwIfInvalid` is `true`, in which case an exception is thrown).
 
 <a id="clean"></a>
 ### `clean(version, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-version-ops.mjs#L109)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
