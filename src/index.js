@@ -1,4 +1,5 @@
 export * from './ext-constants'
+export * from './filter-valid-versions'
 export * from './filter-valid-version-or-range'
 export * from './min-version'
 export * from './next-version'

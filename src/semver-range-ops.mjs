@@ -1,6 +1,8 @@
 import semver from 'semver'
 
-// note `minVersion` is overriden and defined in `min-version.mjs`
+// note:
+// - `maxSatisfying` is overriden and defined in `max-satisfying.mjs`
+// - `minVersion` is overriden and defined in `min-version.mjs`
 
 /**
  * Returns a parsed, normalized range string or null if the range is invalid.
@@ -24,18 +26,6 @@ export const validRange = semver.validRange
  * @function
  */
 export const satisfies = semver.satisfies
-
-/**
- * Returns the highest version in `versions` that satisfies the range, or null if no version satisfies the range.
- * @param {string[]} versions - The versions to check.
- * @param {string} range - The range to check.
- * @param {object} options - The options to pass to the semver.maxSatisfying function.
- * @param {boolean} options.loose - Allow non-conforming, but recognizable semver strings.
- * @returns {string|null} - The highest version that satisfies the range, or null if no version satisfies the range.
- * @category Range operations
- * @function
- */
-export const maxSatisfying = semver.maxSatisfying
 
 /**
  * Returns the lowest version in `versions` that satisfies the range, or null if no version satisfies the range.
