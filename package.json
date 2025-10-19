@@ -1,7 +1,7 @@
 {
   "name": "@liquid-labs/semver-plus",
   "version": "1.0.0-alpha.10",
-  "description": "",
+  "description": "Adds additional functionality to and fixes limitations in the base semver package.",
   "main": "dist/semver-plus.js",
   "scripts": {
     "build": "make build",
@@ -16,9 +16,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "keywords": [],
+  "keywords": ["semver", "version", "versioning"],
   "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "repository": {
     "url": "git+ssh://git@github.com/liquid-labs/semver-plus.git",
     "type": "git"

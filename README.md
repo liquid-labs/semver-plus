@@ -1,4 +1,22 @@
-# semver-plus
+# @liquid-labs/semver-plus
+
+Adds additional functionality to and fixes limitations in the base semver package.
+
+## Installation
+
+```
+npm i @liquid-labs/semver-plus
+```
+
+## Usage
+
+```
+import * as semverplus from '@liquid-labs/semver-plus'
+
+// use recognized 'alpha' -> 'beta' -> 'rc' -> gold/production progression with 'pretype'
+const nextVer = semverplus.nextVersion('v1.0.0-alpha.8', 'pretype')
+console.log(`next version: ${nextVer}`) // 'v1.0.0-beta.0'
+```
 ##  API reference
 _API generated with [dmd-readme-api](https://www.npmjs.com/package/dmd-readme-api)._
 
@@ -33,7 +51,7 @@ _API generated with [dmd-readme-api](https://www.npmjs.com/package/dmd-readme-ap
     - [`subset()`](#subset): Returns `true` if `subRange` is a subset of `superRange`, `false` otherwise.
     - [`upperBound()`](#upperBound): Finds the ceiling of a range.
     - [`validRange()`](#validRange): Returns a parsed, normalized range string or null if the range is invalid.
-  - [`validVersionOrRange()`](#validVersionOrRange): Validates a string to be a valid version or range.
+    - [`validVersionOrRange()`](#validVersionOrRange): Validates a string to be a valid version or range.
   - <span id="global-function-Version-operations-index"></span>_Version operations_
     - [`clean()`](#clean): Returns a cleaned version string removing unecessary comparators and, if `options.loose` is true, fixing space issues.
     - [`coerce()`](#coerce): Aggressively attempts to coerce a string into a valid semver string.
@@ -517,7 +535,7 @@ Returns a parsed, normalized range string or null if the range is invalid.
 __Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="validVersionOrRange"></a>
-### `validVersionOrRange(input, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/valid-version-or-range.mjs#L20)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
+### `validVersionOrRange(input, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/valid-version-or-range.mjs#L21)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>
 
 Validates a string to be a valid version or range. By default, an exception is raised unless `options.disallowVersions`
 is `true`, in which case it filters out invalid strings and returns a new array.
@@ -536,6 +554,8 @@ is `true`, in which case it filters out invalid strings and returns a new array.
 
 **Returns**: `string` \| `null` - - A normalized version or range string or `null` if the string is invalid (if
 `options.throwIfInvalid` is `true`, in which case an exception is thrown).
+
+__Category__: [Range operations](#global-function-Range-operations-index)
 
 <a id="clean"></a>
 ### `clean(version, options)` ⇒ `string` \| `null` <sup>↱<sup>[source code](./src/semver-version-ops.mjs#L109)</sup></sup> <sup>⇧<sup>[global index](#global-function-index)</sup></sup>

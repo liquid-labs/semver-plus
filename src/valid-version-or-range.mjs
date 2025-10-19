@@ -16,6 +16,7 @@ import { xRangeRE } from './constants'
  * @param {boolean} options.throwIfInvalid - If true, throws an exception if the string is invalid.
  * @returns {string|null} - A normalized version or range string or `null` if the string is invalid (if
  * `options.throwIfInvalid` is `true`, in which case an exception is thrown).
+ * @category Range operations
  */
 const validVersionOrRange = (input = throw new Error("'input' is required."), {
   disallowRanges = false,
