@@ -1,6 +1,6 @@
 {
   "name": "@liquid-labs/semver-plus",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "description": "Adds additional functionality to and fixes limitations in the base semver package.",
   "main": "dist/semver-plus.js",
   "scripts": {
@@ -16,7 +16,11 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "keywords": ["semver", "version", "versioning"],
+  "keywords": [
+    "semver",
+    "version",
+    "versioning"
+  ],
   "author": "Zane Rockenbaugh <zane@liquid-labs.com>",
   "license": "Apache-2.0",
   "repository": {
