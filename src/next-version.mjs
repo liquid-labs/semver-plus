@@ -9,17 +9,16 @@ import {
 } from './ext-constants'
 
 /**
- * Given a current version, increment generates the next version string. This method follows the
- * [semver spec](https://semver.org) except that:
- * - `increment` 'prerelease' cannot be used with non-prerelease versions (results in execption)
- * - supports 'pretype' and specific pre-release sequence 'alpha' -> 'beta' -> 'rc' -> released
- *
- * #### Parameters
- * - `currVer`: the current version to increment.
- * - `increment`: what to inrement; may be: 'major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch',
- *   'prerelease', or 'pretype'. The first seven are defined by the [semver spec](https://semver.org) and 'pretype'
- *    means to increment the pre-release ID from 'alpha' -> 'beta' -> 'rc' -> none. Passing in a `currVer` with any
- *    other prerelease ID with a 'pretype' increment will result in undefined results
+ * Given a current version generates the next version string accourding to `increment`. This method is similar to
+ * {@link inc} from the [base semver library](https://semver.org) with two differences.
+ * 1) It supports a specific pre-release sequence prototype -> 'alpha' -> 'beta' -> 'rc' -> released and the 'pretype'
+ *    increment will advance the prerelease ID through these stages.
+ * 2) The 'prerelease' increment can only be used to advance the prerelease version number and does not function as
+ *    'prepatch' on a non-prerelease version.
+ * @param {string} currVer - The current version to increment.
+ * @param {string} increment - The increment to use.
+ * @returns {string} - The next version string.
+ * @category Version operations
  */
 const nextVersion = (currVer, increment) => {
   if (!semver.valid(currVer)) {

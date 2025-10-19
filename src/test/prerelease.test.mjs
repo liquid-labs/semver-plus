@@ -1,6 +1,6 @@
 /* global describe expect test */
 
-import { prerelease } from '../prerelease'
+import { prerelease } from '../semver-version-ops'
 
 describe('prerelease', () => {
   test.each([
