@@ -1,6 +1,6 @@
 {
-  "name": "@liquid-labs/semver-plus",
-  "version": "1.0.0-alpha.11",
+  "name": "semver-plus",
+  "version": "1.0.0-rc.0",
   "description": "Adds additional functionality to and fixes limitations in the base semver package.",
   "main": "dist/semver-plus.js",
   "scripts": {
