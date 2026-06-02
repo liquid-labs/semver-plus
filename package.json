@@ -1,6 +1,6 @@
 {
   "name": "semver-plus",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "Adds additional functionality to and fixes limitations in the base semver package.",
   "main": "dist/semver-plus.js",
   "scripts": {
